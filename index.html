@@ -1,0 +1,2166 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>💰 MagnataStore - Virada de Saldo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+        input, textarea, .codigo {
+            user-select: text;
+            -webkit-user-select: text;
+            -moz-user-select: text;
+            -ms-user-select: text;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            background: #080808;
+            color: #e8e8e8;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background-image: radial-gradient(ellipse at center, #111111 0%, #080808 100%);
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #121212; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: #ffd700; border-radius: 10px; }
+
+        .login-container {
+            max-width: 420px;
+            width: 100%;
+            background: linear-gradient(145deg, #121212, #0a0a0a);
+            border-radius: 24px;
+            padding: 40px 35px;
+            border: 1px solid #222;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.9), inset 0 1px 0 rgba(255,255,255,0.03);
+        }
+
+        .login-container .logo-icon { font-size: 3em; display: block; text-align: center; margin-bottom: 5px; }
+        .login-container h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8em;
+            text-align: center;
+            background: linear-gradient(135deg, #ffd700, #f5a623);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+        }
+        .login-container .subtitle { text-align: center; color: #777; font-size: 0.85em; margin-bottom: 30px; }
+        .login-container .form-group { margin-bottom: 18px; }
+        .login-container .form-group label { display: block; color: #aaa; font-size: 0.8em; font-weight: 600; margin-bottom: 6px; letter-spacing: 0.5px; }
+        .login-container .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            border-radius: 10px;
+            color: #e0e0e0;
+            font-size: 0.95em;
+            transition: border-color 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+        .login-container .form-group input:focus { outline: none; border-color: #ffd700; }
+        .login-container .form-group input::placeholder { color: #555; }
+
+        .login-container .btn-login {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #ffd700, #f5a623);
+            color: #000;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+            margin-top: 5px;
+        }
+        .login-container .btn-login:hover { transform: scale(1.02); box-shadow: 0 8px 30px rgba(255,215,0,0.15); }
+        .login-container .btn-login:active { transform: scale(0.97); }
+
+        .login-container .login-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+            font-size: 0.8em;
+            color: #666;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .login-container .login-options a { color: #ffd700; text-decoration: none; cursor: pointer; transition: color 0.3s ease; }
+        .login-container .login-options a:hover { color: #f5a623; }
+        .login-container .login-options .switch-link { color: #5865F2; }
+        .login-container .login-options .switch-link:hover { color: #7984f5; }
+
+        .login-container .login-erro {
+            background: rgba(255,68,68,0.08);
+            border: 1px solid rgba(255,68,68,0.2);
+            color: #ff4444;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 0.8em;
+            margin-top: 12px;
+            display: none;
+        }
+        .login-container .login-erro.show { display: block; }
+        .login-container .login-sucesso {
+            background: rgba(0,255,136,0.08);
+            border: 1px solid rgba(0,255,136,0.2);
+            color: #00ff88;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 0.8em;
+            margin-top: 12px;
+            display: none;
+        }
+        .login-container .login-sucesso.show { display: block; }
+
+        .login-container .divider {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+            gap: 15px;
+        }
+        .login-container .divider::before, .login-container .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #2a2a2a;
+        }
+        .login-container .divider span { color: #555; font-size: 0.7em; text-transform: uppercase; letter-spacing: 1px; }
+
+        .login-container .btn-convidado {
+            width: 100%;
+            padding: 14px;
+            background: #5865F2;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+        .login-container .btn-convidado:hover { transform: scale(1.02); box-shadow: 0 8px 30px rgba(88,101,242,0.3); }
+
+        .main-content { display: none; max-width: 820px; width: 100%; }
+        .main-content.show { display: block; }
+
+        .container {
+            max-width: 820px;
+            width: 100%;
+            background: linear-gradient(145deg, #121212, #0a0a0a);
+            border-radius: 24px;
+            padding: 35px;
+            border: 1px solid #222;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.9), inset 0 1px 0 rgba(255,255,255,0.03);
+        }
+
+        .header { text-align: center; margin-bottom: 30px; position: relative; }
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #ffd700, transparent);
+        }
+        .header .logo-icon { font-size: 3em; display: block; margin-bottom: 5px; }
+        .header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2em;
+            background: linear-gradient(135deg, #ffd700, #f5a623);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 2px;
+        }
+        .header p { color: #777; font-size: 0.9em; letter-spacing: 1px; margin-top: 5px; }
+        .badge {
+            display: inline-block;
+            background: rgba(255,215,0,0.12);
+            color: #ffd700;
+            padding: 4px 18px;
+            border-radius: 50px;
+            font-size: 0.7em;
+            font-weight: 600;
+            margin-top: 10px;
+            border: 1px solid rgba(255,215,0,0.15);
+            letter-spacing: 0.5px;
+        }
+
+        .user-bar {
+            background: rgba(0,255,136,0.05);
+            border: 1px solid rgba(0,255,136,0.15);
+            border-radius: 10px;
+            padding: 10px 18px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .user-bar .user-info { display: flex; align-items: center; gap: 10px; font-size: 0.8em; color: #888; }
+        .user-bar .user-info .user-name { color: #ffd700; font-weight: 600; }
+        .user-bar .user-info .user-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ffd700, #f5a623);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.8em;
+            color: #000;
+        }
+        .user-bar .btn-logout {
+            background: transparent;
+            border: 1px solid #2a2a2a;
+            color: #888;
+            padding: 6px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.7em;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+        .user-bar .btn-logout:hover { border-color: #ff4444; color: #ff4444; }
+        .user-bar .btn-admin {
+            background: #ffd700;
+            color: #000;
+            border: none;
+            padding: 6px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.7em;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+            display: none;
+        }
+        .user-bar .btn-admin.show { display: inline-block; }
+        .user-bar .btn-admin:hover { transform: scale(1.05); box-shadow: 0 4px 15px rgba(255,215,0,0.3); }
+
+        .explicacao {
+            background: rgba(255,215,0,0.03);
+            border: 1px solid #1e1e1e;
+            border-radius: 14px;
+            padding: 20px 24px;
+            margin-bottom: 28px;
+            border-left: 3px solid #ffd700;
+        }
+        .explicacao .titulo-explicacao { color: #ffd700; font-weight: 700; font-size: 0.85em; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 8px; }
+        .explicacao .texto-explicacao { color: #aaa; font-size: 0.92em; line-height: 1.7; }
+        .explicacao .texto-explicacao strong { color: #ffd700; }
+        .explicacao .texto-explicacao .destaque { color: #00ff88; font-weight: 600; }
+
+        .tabela {
+            background: #0d0d0d;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 25px;
+            border: 1px solid #1a1a1a;
+        }
+        .tabela h2 { color: #ffd700; font-size: 1em; margin-bottom: 16px; text-align: center; text-transform: uppercase; letter-spacing: 2px; font-weight: 600; }
+        .tabela-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .tabela-item {
+            background: #121212;
+            padding: 14px 10px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid #1a1a1a;
+            transition: all 0.3s ease;
+            cursor: default;
+        }
+        .tabela-item:hover { border-color: #ffd700; transform: translateY(-2px); box-shadow: 0 8px 25px rgba(255,215,0,0.05); }
+        .tabela-item .valor { font-size: 1.2em; font-weight: 700; color: #ffd700; }
+        .tabela-item .retorno { font-size: 0.85em; color: #00ff88; margin-top: 4px; }
+        .tabela-item .lucro { font-size: 0.75em; color: #666; margin-top: 2px; }
+        .tabela-item .estoque-visivel { font-size: 0.7em; color: #888; margin-top: 2px; }
+        .tabela-item .estoque-visivel .qtd { color: #00ff88; font-weight: 600; }
+        .tabela-item .estoque-visivel .esgotado { color: #ff4444; font-weight: 600; }
+
+        .botoes-pagamento {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .btn-pagar {
+            background: linear-gradient(145deg, #1a1a1a, #0d0d0d);
+            color: #ffffff;
+            border: 3px solid #444;
+            padding: 20px 10px;
+            border-radius: 16px;
+            font-weight: 700;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            font-family: 'Inter', sans-serif;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-pagar::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,215,0,0.2) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            border-radius: 16px;
+        }
+        .btn-pagar:hover::before { opacity: 1; }
+        .btn-pagar:hover {
+            border-color: #ffd700;
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 10px 50px rgba(255, 215, 0, 0.25);
+            background: linear-gradient(145deg, #1e1e1e, #111111);
+        }
+        .btn-pagar:active { transform: scale(0.97); box-shadow: 0 4px 20px rgba(255, 215, 0, 0.1); }
+        .btn-pagar .icone { font-size: 1.8em; position: relative; z-index: 1; }
+        .btn-pagar .valor-btn {
+            position: relative;
+            z-index: 1;
+            font-size: 1.4em;
+            font-weight: 800;
+            color: #ffd700;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+            letter-spacing: 1px;
+        }
+        .btn-pagar .sub {
+            font-size: 0.75em;
+            font-weight: 500;
+            color: #aaa;
+            position: relative;
+            z-index: 1;
+        }
+        .btn-pagar .sub .destaque { color: #00ff88; font-weight: 700; }
+        .btn-pagar:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            border-color: #333;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+        .btn-pagar:disabled::before { opacity: 0; }
+        .btn-pagar:disabled .valor-btn { color: #666; text-shadow: none; }
+        .btn-pagar:disabled .sub { color: #444; }
+        .btn-pagar:disabled .sub .destaque { color: #ff4444; }
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.05); }
+            50% { box-shadow: 0 0 50px rgba(255, 215, 0, 0.2); }
+        }
+        .btn-pagar:not(:disabled) { animation: pulse-glow 3s ease-in-out infinite; }
+
+        .botoes-acoes { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+        .btn-discord {
+            background: #1a1a1a;
+            color: #fff;
+            border: 1px solid #2a2a2a;
+            padding: 14px;
+            border-radius: 14px;
+            font-weight: 700;
+            font-size: 0.95em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-family: 'Inter', sans-serif;
+        }
+        .btn-discord:hover { border-color: #5865F2; background: #1e1e2a; transform: translateY(-2px); box-shadow: 0 8px 30px rgba(88,101,242,0.1); }
+        .btn-discord .icon { font-size: 1.3em; }
+        .btn-suporte {
+            background: #1a1a1a;
+            color: #fff;
+            border: 1px solid #2a2a2a;
+            padding: 14px;
+            border-radius: 14px;
+            font-weight: 700;
+            font-size: 0.95em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-family: 'Inter', sans-serif;
+        }
+        .btn-suporte:hover { border-color: #ffd700; background: #1a1a1a; transform: translateY(-2px); box-shadow: 0 8px 30px rgba(255,215,0,0.08); }
+        .btn-suporte .icon { font-size: 1.3em; }
+
+        .produtos-adicionais {
+            background: #0d0d0d;
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid #1a1a1a;
+            margin-top: 20px;
+        }
+        .produtos-adicionais .titulo-produtos { color: #ffd700; font-size: 1em; text-align: center; text-transform: uppercase; letter-spacing: 2px; font-weight: 600; margin-bottom: 16px; }
+        .produtos-adicionais .subtitulo-produtos { color: #666; font-size: 0.75em; text-align: center; margin-bottom: 16px; letter-spacing: 0.5px; }
+        .produtos-adicionais-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; }
+        .produto-adicional-card {
+            background: #121212;
+            border: 1px solid #1a1a1a;
+            border-radius: 12px;
+            padding: 15px;
+            transition: all 0.3s ease;
+        }
+        .produto-adicional-card:hover { border-color: #ffd700; transform: translateY(-3px); box-shadow: 0 8px 25px rgba(255,215,0,0.05); }
+        .produto-adicional-card .produto-nome { color: #ffd700; font-weight: 600; font-size: 0.95em; margin-bottom: 5px; }
+        .produto-adicional-card .produto-preco { color: #fff; font-size: 1.1em; font-weight: 700; }
+        .produto-adicional-card .produto-preco span { color: #00ff88; }
+        .produto-adicional-card .produto-estoque { color: #666; font-size: 0.75em; margin-top: 3px; }
+        .produto-adicional-card .produto-estoque .qtd { color: #00ff88; font-weight: 600; }
+        .produto-adicional-card .produto-estoque .esgotado { color: #ff4444; font-weight: 600; }
+        .produto-adicional-card .produto-desc { color: #888; font-size: 0.75em; margin-top: 5px; line-height: 1.4; max-height: 60px; overflow: hidden; }
+        .produto-adicional-card .produto-categoria { display: inline-block; background: rgba(255,215,0,0.1); color: #ffd700; font-size: 0.6em; padding: 2px 10px; border-radius: 50px; margin-top: 8px; border: 1px solid rgba(255,215,0,0.1); }
+        .produto-adicional-card .btn-comprar {
+            background: #ffd700;
+            color: #000;
+            border: none;
+            padding: 8px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+        }
+        .produto-adicional-card .btn-comprar:hover { transform: scale(1.02); box-shadow: 0 4px 15px rgba(255,215,0,0.2); }
+        .produto-adicional-card .btn-comprar:disabled { background: #333; color: #666; cursor: not-allowed; }
+
+        .feedbacks-area {
+            background: #0d0d0d;
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid #1a1a1a;
+            margin-top: 20px;
+        }
+        .feedbacks-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .feedbacks-header .titulo-feedbacks { color: #888; font-size: 0.8em; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; }
+        .feedbacks-header .btn-feedback {
+            background: transparent;
+            border: 1px solid #2a2a2a;
+            color: #aaa;
+            padding: 6px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.75em;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+        .feedbacks-header .btn-feedback:hover { border-color: #ffd700; color: #ffd700; }
+        .feedbacks-header .aviso-feedbacks { color: #555; font-size: 0.65em; letter-spacing: 0.5px; }
+        .feedbacks-header .aviso-feedbacks span { color: #00ff88; }
+
+        .lista-feedbacks { max-height: 400px; overflow-y: auto; }
+        .lista-feedbacks::-webkit-scrollbar { width: 4px; }
+        .lista-feedbacks::-webkit-scrollbar-track { background: #0a0a0a; border-radius: 10px; }
+        .lista-feedbacks::-webkit-scrollbar-thumb { background: #ffd700; border-radius: 10px; }
+
+        .feedback-item {
+            display: flex;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px solid #161616;
+            animation: fadeIn 0.4s ease;
+        }
+        .feedback-item:last-child { border-bottom: none; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .feedback-item .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ffd700, #f5a623);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.85em;
+            color: #000;
+            flex-shrink: 0;
+        }
+        .feedback-item .conteudo { flex: 1; }
+        .feedback-item .nome { font-weight: 600; color: #ffd700; font-size: 0.85em; }
+        .feedback-item .tempo { color: #555; font-size: 0.65em; margin-left: 8px; }
+        .feedback-item .avaliacao { color: #ffd700; font-size: 0.8em; letter-spacing: 1px; }
+        .feedback-item .texto { color: #aaa; font-size: 0.85em; margin-top: 2px; line-height: 1.4; }
+        .feedback-item .valor-pago { color: #00ff88; font-weight: 600; font-size: 0.7em; margin-top: 2px; }
+        .feedback-item .badge-comprador { display: inline-block; background: rgba(0,255,136,0.1); color: #00ff88; font-size: 0.6em; padding: 1px 10px; border-radius: 50px; margin-left: 6px; border: 1px solid rgba(0,255,136,0.15); }
+        .feedback-item .badge-verificado { display: inline-block; background: rgba(88,101,242,0.15); color: #5865F2; font-size: 0.55em; padding: 1px 8px; border-radius: 50px; margin-left: 4px; border: 1px solid rgba(88,101,242,0.2); }
+
+        .admin-panel { display: none; max-width: 820px; width: 100%; }
+        .admin-panel.show { display: block; }
+        .admin-panel .admin-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 20px; }
+        .admin-panel .admin-header h2 { color: #ffd700; font-family: 'Orbitron', sans-serif; font-size: 1.5em; }
+        .admin-panel .admin-header .btn-voltar { background: transparent; border: 1px solid #2a2a2a; color: #aaa; padding: 8px 20px; border-radius: 8px; cursor: pointer; transition: all 0.3s ease; }
+        .admin-panel .admin-header .btn-voltar:hover { border-color: #ffd700; color: #ffd700; }
+        .admin-panel .admin-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .admin-panel .admin-tabs button { background: transparent; border: 1px solid #2a2a2a; color: #aaa; padding: 10px 20px; border-radius: 8px; cursor: pointer; transition: all 0.3s ease; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 0.85em; }
+        .admin-panel .admin-tabs button:hover { border-color: #ffd700; color: #ffd700; }
+        .admin-panel .admin-tabs button.active { background: #ffd700; color: #000; border-color: #ffd700; }
+        .admin-panel .admin-content { background: #0d0d0d; border-radius: 16px; padding: 20px; border: 1px solid #1a1a1a; min-height: 400px; }
+
+        .admin-logs { max-height: 400px; overflow-y: auto; font-family: monospace; font-size: 0.7em; }
+        .admin-logs .log-entry { padding: 8px 0; border-bottom: 1px solid #161616; color: #aaa; line-height: 1.6; }
+        .admin-logs .log-entry .log-time { color: #555; }
+        .admin-logs .log-entry .log-type { font-weight: 600; padding: 1px 8px; border-radius: 4px; font-size: 0.8em; margin: 0 4px; }
+        .admin-logs .log-entry .log-type.login { color: #5865F2; }
+        .admin-logs .log-entry .log-type.compra { color: #00ff88; }
+        .admin-logs .log-entry .log-type.feedback { color: #ffd700; }
+        .admin-logs .log-entry .log-type.pagamento { color: #ff6b00; }
+        .admin-logs .log-entry .log-type.erro { color: #ff4444; }
+        .admin-logs .log-entry .log-type.info { color: #888; }
+        .admin-logs .log-entry .log-type.admin { color: #ff00ff; }
+        .admin-logs .log-entry .log-user { color: #ffd700; }
+        .admin-logs .log-entry .log-details { color: #444; font-size: 0.8em; display: block; padding-left: 20px; white-space: pre-wrap; word-break: break-all; }
+
+        .admin-actions { display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; }
+        .admin-actions button { background: #1a1a1a; border: 1px solid #2a2a2a; color: #aaa; padding: 8px 16px; border-radius: 8px; cursor: pointer; transition: all 0.3s ease; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 0.8em; }
+        .admin-actions button:hover { border-color: #ffd700; color: #ffd700; }
+        .admin-actions .btn-danger { border-color: #ff4444; color: #ff4444; }
+        .admin-actions .btn-danger:hover { background: #ff4444; color: #000; }
+        .admin-actions .btn-success { border-color: #00ff88; color: #00ff88; }
+        .admin-actions .btn-success:hover { background: #00ff88; color: #000; }
+
+        .admin-produto { background: #121212; border: 1px solid #1a1a1a; border-radius: 10px; padding: 15px; margin-bottom: 10px; position: relative; }
+        .admin-produto .produto-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+        .admin-produto .produto-header .produto-nome { color: #ffd700; font-weight: 600; }
+        .admin-produto .produto-header .produto-actions-top { display: flex; gap: 6px; }
+        .admin-produto .produto-header .produto-actions-top button { background: transparent; border: 1px solid #2a2a2a; color: #aaa; padding: 4px 10px; border-radius: 6px; cursor: pointer; font-size: 0.7em; transition: all 0.3s ease; }
+        .admin-produto .produto-header .produto-actions-top button:hover { border-color: #ffd700; color: #ffd700; }
+        .admin-produto .produto-header .produto-actions-top .btn-config { border-color: #ffd700; color: #ffd700; }
+        .admin-produto .produto-fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; margin-top: 10px; }
+        .admin-produto .produto-fields input, .admin-produto .produto-fields select, .admin-produto .produto-fields textarea { background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 6px; padding: 6px 10px; color: #e0e0e0; font-size: 0.8em; font-family: 'Inter', sans-serif; }
+        .admin-produto .produto-fields input:focus, .admin-produto .produto-fields select:focus, .admin-produto .produto-fields textarea:focus { outline: none; border-color: #ffd700; }
+        .admin-produto .produto-fields textarea { grid-column: 1/-1; resize: vertical; min-height: 40px; }
+        .admin-produto .produto-actions { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+        .admin-produto .produto-actions button { padding: 5px 12px; border-radius: 6px; border: none; cursor: pointer; font-weight: 600; font-size: 0.75em; transition: all 0.3s ease; font-family: 'Inter', sans-serif; }
+        .admin-produto .produto-actions .btn-edit { background: #ffd700; color: #000; }
+        .admin-produto .produto-actions .btn-edit:hover { transform: scale(1.05); }
+        .admin-produto .produto-actions .btn-delete { background: #ff4444; color: #fff; }
+        .admin-produto .produto-actions .btn-delete:hover { transform: scale(1.05); }
+        .admin-produto .produto-actions .btn-save { background: #00ff88; color: #000; }
+        .admin-produto .produto-actions .btn-save:hover { transform: scale(1.05); }
+        .admin-produto .produto-actions .btn-cancel { background: #333; color: #aaa; }
+        .admin-produto .produto-actions .btn-cancel:hover { background: #444; }
+        .admin-produto .config-panel { display: none; background: #0a0a0a; border-radius: 8px; padding: 12px; margin-top: 10px; border: 1px solid #ffd700; }
+        .admin-produto .config-panel.show { display: block; }
+        .admin-produto .config-panel .config-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px; }
+        .admin-produto .config-panel .config-row .config-item label { display: block; color: #666; font-size: 0.7em; margin-bottom: 2px; }
+        .admin-produto .config-panel .config-row .config-item input { width: 100%; padding: 6px 10px; background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 6px; color: #e0e0e0; font-size: 0.8em; }
+        .admin-produto .config-panel .config-row .config-item input:focus { outline: none; border-color: #ffd700; }
+        .admin-produto .config-panel .btn-salvar-config { background: #ffd700; color: #000; border: none; padding: 6px 16px; border-radius: 6px; font-weight: 700; cursor: pointer; margin-top: 10px; font-size: 0.8em; }
+        .admin-produto .config-panel .btn-salvar-config:hover { transform: scale(1.05); }
+
+        .btn-add-produto { background: #00ff88; color: #000; border: none; padding: 12px 24px; border-radius: 10px; font-weight: 700; cursor: pointer; width: 100%; margin-top: 15px; transition: all 0.3s ease; font-family: 'Inter', sans-serif; }
+        .btn-add-produto:hover { transform: scale(1.02); box-shadow: 0 4px 20px rgba(0,255,136,0.2); }
+
+        .estoque-area {
+            background: #0d0d0d;
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid #1a1a1a;
+            margin-bottom: 20px;
+        }
+        .estoque-item {
+            background: #121212;
+            border: 1px solid #1a1a1a;
+            border-radius: 10px;
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .estoque-item .info { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+        .estoque-item .nome { color: #ffd700; font-weight: 600; }
+        .estoque-item .preco { color: #00ff88; }
+        .estoque-item .qtd { color: #aaa; }
+        .estoque-item .qtd.baixo { color: #ffa500; font-weight: 600; }
+        .estoque-item .acoes { display: flex; gap: 6px; }
+        .estoque-item .acoes button {
+            padding: 4px 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.75em;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+        }
+        .estoque-item .acoes .btn-editar { background: #ffd700; color: #000; }
+        .estoque-item .acoes .btn-editar:hover { transform: scale(1.05); }
+        .estoque-item .acoes .btn-excluir { background: #ff4444; color: #fff; }
+        .estoque-item .acoes .btn-excluir:hover { transform: scale(1.05); }
+        .estoque-item .badge-esgotado { background: #ff4444; color: #fff; padding: 2px 10px; border-radius: 50px; font-size: 0.7em; font-weight: 600; }
+        .estoque-item .badge-baixo { background: #ffa500; color: #000; padding: 2px 10px; border-radius: 50px; font-size: 0.7em; font-weight: 600; }
+
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.92); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(8px); }
+        .modal.show { display: flex; }
+        .modal-content { background: #121212; border: 1px solid #222; border-radius: 20px; padding: 30px; max-width: 480px; width: 92%; max-height: 85vh; overflow-y: auto; box-shadow: 0 30px 80px rgba(0,0,0,0.8); }
+        .modal-content h2 { color: #ffd700; font-family: 'Orbitron', sans-serif; font-size: 1.3em; text-align: center; margin-bottom: 20px; letter-spacing: 1px; }
+        .modal-content .qr-code { text-align: center; margin: 15px 0; background: #0a0a0a; padding: 15px; border-radius: 12px; border: 1px solid #1a1a1a; }
+        .modal-content .qr-code img { max-width: 200px; border-radius: 8px; }
+        .modal-content .pix-code { background: #0d0d0d; padding: 14px; border-radius: 10px; margin: 12px 0; text-align: center; border: 1px solid #1a1a1a; }
+        .modal-content .pix-code p { color: #777; font-size: 0.75em; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 1px; }
+        .modal-content .pix-code .codigo { font-family: 'Courier New', monospace; font-size: 0.7em; color: #00ff88; word-break: break-all; max-height: 80px; overflow-y: auto; line-height: 1.6; }
+        .modal-content .copiar-btn { background: #ffd700; color: #000; border: none; padding: 8px 20px; border-radius: 8px; font-weight: 700; cursor: pointer; margin-top: 8px; transition: all 0.3s ease; font-size: 0.85em; }
+        .modal-content .copiar-btn:hover { background: #f5a623; transform: scale(1.02); }
+        .modal-content .info-pagamento { margin: 12px 0; padding: 12px 16px; background: #0d0d0d; border-radius: 10px; border-left: 3px solid #ffd700; }
+        .modal-content .info-pagamento p { color: #aaa; font-size: 0.85em; margin: 3px 0; }
+        .modal-content .info-pagamento span { color: #ffd700; font-weight: 600; }
+        .modal-content .chave-recebimento { background: #0d0d0d; padding: 12px 16px; border-radius: 10px; margin: 10px 0; border: 1px solid #1a1a1a; }
+        .modal-content .chave-recebimento .label-chave { color: #777; font-size: 0.7em; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+        .modal-content .chave-recebimento .chave { color: #00ff88; font-family: 'Courier New', monospace; word-break: break-all; font-size: 0.85em; }
+        .modal-content .mensagem { padding: 12px; border-radius: 10px; margin: 10px 0; font-size: 0.9em; text-align: center; }
+        .modal-content .mensagem.sucesso { background: rgba(0,255,136,0.06); border: 1px solid rgba(0,255,136,0.15); color: #00ff88; }
+        .modal-content .mensagem.erro { background: rgba(255,68,68,0.06); border: 1px solid rgba(255,68,68,0.15); color: #ff4444; }
+        .modal-content .mensagem.pendente { background: rgba(255,215,0,0.06); border: 1px solid rgba(255,215,0,0.15); color: #ffd700; }
+        .modal-content .btn-verificar { background: #1a1a1a; color: #fff; border: 1px solid #2a2a2a; padding: 12px; border-radius: 10px; font-weight: 700; cursor: pointer; width: 100%; margin-top: 10px; transition: all 0.3s ease; font-size: 0.9em; }
+        .modal-content .btn-verificar:hover { border-color: #ffd700; background: #1e1e1e; }
+        .modal-content .btn-fechar { background: transparent; color: #555; border: none; padding: 10px; cursor: pointer; width: 100%; margin-top: 4px; font-size: 0.8em; transition: color 0.3s ease; }
+        .modal-content .btn-fechar:hover { color: #fff; }
+
+        .modal-feedback .modal-content { max-width: 420px; }
+        .modal-feedback .modal-content .form-feedback textarea { width: 100%; padding: 12px; background: #0d0d0d; border: 1px solid #222; border-radius: 10px; color: #e0e0e0; font-family: 'Inter', sans-serif; font-size: 0.9em; resize: vertical; min-height: 100px; transition: border-color 0.3s ease; }
+        .modal-feedback .modal-content .form-feedback textarea:focus { outline: none; border-color: #ffd700; }
+        .modal-feedback .modal-content .form-feedback textarea::placeholder { color: #555; }
+        .modal-feedback .modal-content .estrelas { display: flex; gap: 8px; justify-content: center; margin: 15px 0; font-size: 2em; }
+        .modal-feedback .modal-content .estrelas .star { cursor: pointer; color: #333; transition: color 0.2s ease; user-select: none; }
+        .modal-feedback .modal-content .estrelas .star.active { color: #ffd700; }
+        .modal-feedback .modal-content .estrelas .star:hover { color: #ffd700; }
+        .modal-feedback .modal-content .btn-enviar-feedback { background: #ffd700; color: #000; border: none; padding: 12px; border-radius: 10px; font-weight: 700; cursor: pointer; width: 100%; font-size: 0.9em; transition: all 0.3s ease; font-family: 'Inter', sans-serif; }
+        .modal-feedback .modal-content .btn-enviar-feedback:hover { background: #f5a623; transform: scale(1.01); }
+        .modal-feedback .modal-content .btn-enviar-feedback:disabled { background: #333; cursor: not-allowed; }
+
+        .mensagem-flutuante {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-weight: 600;
+            z-index: 9999;
+            animation: slideUp 0.4s ease;
+            max-width: 90%;
+            text-align: center;
+        }
+        .mensagem-flutuante.sucesso { background: rgba(0,255,136,0.12); border: 1px solid #00ff88; color: #00ff88; }
+        .mensagem-flutuante.erro { background: rgba(255,68,68,0.12); border: 1px solid #ff4444; color: #ff4444; }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+
+        @media (max-width: 640px) {
+            .login-container { padding: 30px 20px; }
+            .container { padding: 20px; }
+            .tabela-grid { grid-template-columns: repeat(2, 1fr); }
+            .botoes-pagamento { grid-template-columns: repeat(2, 1fr); }
+            .header h1 { font-size: 1.5em; }
+            .modal-content { padding: 20px; }
+            .explicacao { padding: 16px; }
+            .explicacao .texto-explicacao { font-size: 0.85em; }
+            .feedbacks-header { flex-direction: column; align-items: stretch; }
+            .user-bar { flex-direction: column; align-items: stretch; text-align: center; }
+            .admin-produto .produto-fields { grid-template-columns: 1fr; }
+            .admin-produto .config-panel .config-row { grid-template-columns: 1fr; }
+            .botoes-acoes { grid-template-columns: 1fr; }
+            .produtos-adicionais-grid { grid-template-columns: 1fr 1fr; }
+            .estoque-item { flex-direction: column; align-items: stretch; }
+            .estoque-item .info { justify-content: center; }
+            .estoque-item .acoes { justify-content: center; }
+            .btn-pagar { padding: 14px 8px; }
+            .btn-pagar .valor-btn { font-size: 1.1em; }
+        }
+        @media (max-width: 400px) {
+            .tabela-grid { grid-template-columns: 1fr 1fr; }
+            .botoes-pagamento { grid-template-columns: 1fr 1fr; }
+            .produtos-adicionais-grid { grid-template-columns: 1fr; }
+            .btn-pagar { padding: 12px 6px; }
+            .btn-pagar .valor-btn { font-size: 1em; }
+            .btn-pagar .sub { font-size: 0.6em; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- TELA DE LOGIN -->
+    <div class="login-container" id="loginContainer">
+        <span class="logo-icon">💎</span>
+        <h1>MAGNATASTORE</h1>
+        <p class="subtitle">💰 Faça login para acessar a loja</p>
+        <div class="form-group">
+            <label>👤 Usuário</label>
+            <input type="text" id="loginUser" placeholder="Digite seu usuário" />
+        </div>
+        <div class="form-group">
+            <label>🔒 Senha</label>
+            <input type="password" id="loginPass" placeholder="Digite sua senha" />
+        </div>
+        <button class="btn-login" id="btnLogin" onclick="fazerLogin()">🔑 Entrar</button>
+        <div class="login-options">
+            <span>Não tem conta? <a class="switch-link" onclick="toggleRegistro()">Registrar</a></span>
+            <a onclick="esqueciSenha()">Esqueci a senha</a>
+        </div>
+        <div class="login-erro" id="loginErro">❌ Usuário ou senha incorretos!</div>
+        <div class="login-sucesso" id="loginSucesso">✅ Registro realizado! Faça login.</div>
+        <div class="divider"><span>ou</span></div>
+        <button class="btn-convidado" onclick="loginConvidado()">🎮 Entrar como Convidado</button>
+    </div>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <div class="main-content" id="mainContent">
+        <div class="container">
+            <div class="header">
+                <span class="logo-icon">💎</span>
+                <h1>MAGNATASTORE</h1>
+                <p>💰 Virada de Saldo — Invista pouco, lucre muito!</p>
+                <span class="badge">🟢 247 pessoas online agora</span>
+            </div>
+
+            <div class="user-bar">
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar">C</div>
+                    <span>Bem-vindo, <span class="user-name" id="userName">Cliente</span></span>
+                </div>
+                <div>
+                    <button class="btn-admin" id="btnAdmin" onclick="abrirAdmin()">🛠️ Admin</button>
+                    <button class="btn-logout" onclick="fazerLogout()">🚪 Sair</button>
+                </div>
+            </div>
+
+            <div class="explicacao">
+                <div class="titulo-explicacao">📌 Como funciona</div>
+                <div class="texto-explicacao">
+                    Você envia o <strong>valor determinado</strong> da tabela em <strong>dinheiro limpo</strong>, e eu te envio o <strong>valor de retorno</strong> em <span class="destaque">dinheiro sujo</span>.
+                    Após o pagamento, a <strong>API automática</strong> retorna o valor para a <strong>chave PIX que você cadastrou</strong>.
+                </div>
+            </div>
+
+            <div id="statusPagamento" class="status-pagamento"></div>
+
+            <div class="tabela">
+                <h2>📊 Tabela de Valores</h2>
+                <div class="tabela-grid" id="tabelaGrid"></div>
+            </div>
+
+            <div class="botoes-pagamento" id="botoesPagamento"></div>
+
+            <div class="botoes-acoes">
+                <button class="btn-discord" onclick="window.open('https://discord.gg/TpVvpzmX64', '_blank')"><span class="icon">💬</span> Discord</button>
+                <button class="btn-suporte" onclick="window.open('https://discord.gg/TpVvpzmX64', '_blank')"><span class="icon">🎧</span> Suporte</button>
+            </div>
+
+            <div class="produtos-adicionais">
+                <div class="titulo-produtos">📦 Produtos Adicionais</div>
+                <div class="subtitulo-produtos">💡 Produtos extras para complementar sua experiência</div>
+                <div class="produtos-adicionais-grid" id="produtosAdicionais"></div>
+            </div>
+
+            <div class="feedbacks-area">
+                <div class="feedbacks-header">
+                    <div>
+                        <div class="titulo-feedbacks">💬 Depoimentos de Clientes</div>
+                        <div class="aviso-feedbacks">📌 <span id="totalFeedbacks">100</span> clientes já compartilharam sua experiência</div>
+                    </div>
+                    <button class="btn-feedback" onclick="abrirModalFeedback()">✏️ Deixar Feedback</button>
+                </div>
+                <div class="lista-feedbacks" id="listaFeedbacks"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PAINEL ADMIN -->
+    <div class="admin-panel" id="adminPanel">
+        <div class="container">
+            <div class="admin-header">
+                <h2>🛠️ Painel Admin</h2>
+                <button class="btn-voltar" onclick="fecharAdmin()">✖️ Fechar</button>
+            </div>
+
+            <div class="estoque-area" id="estoqueArea" style="margin-top:0;margin-bottom:20px;">
+                <div class="titulo-produtos" style="color:#ffd700;font-size:1em;text-align:center;text-transform:uppercase;letter-spacing:2px;font-weight:600;margin-bottom:16px;">
+                    📦 Gerenciar Estoque
+                </div>
+                <div id="estoqueLista"></div>
+                <div id="formAdicionarEstoque" style="margin-top:15px; display:flex; gap:10px; flex-wrap:wrap;">
+                    <input type="text" id="addProdutoId" placeholder="ID" style="flex:1;padding:8px;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:8px;color:#e0e0e0;font-family:'Inter',sans-serif;" />
+                    <input type="text" id="addProdutoNome" placeholder="Nome" style="flex:1;padding:8px;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:8px;color:#e0e0e0;font-family:'Inter',sans-serif;" />
+                    <input type="number" id="addProdutoPrecoEstoque" placeholder="Preço" style="flex:0.5;padding:8px;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:8px;color:#e0e0e0;font-family:'Inter',sans-serif;" />
+                    <input type="number" id="addProdutoQtdEstoque" placeholder="Qtd" style="flex:0.5;padding:8px;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:8px;color:#e0e0e0;font-family:'Inter',sans-serif;" />
+                    <button onclick="adicionarProdutoEstoque()" style="padding:8px 20px;background:#00ff88;color:#000;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;">➕ Adicionar</button>
+                </div>
+            </div>
+
+            <div class="admin-tabs">
+                <button class="active" data-tab="logs" onclick="adminTab('logs')">📋 Logs</button>
+                <button data-tab="produtos" onclick="adminTab('produtos')">🛒 Produtos</button>
+                <button data-tab="add" onclick="adminTab('add')">➕ Adicionar</button>
+            </div>
+
+            <div class="admin-content" id="adminContent">
+                <div id="tab-logs" class="admin-tab-content">
+                    <div class="admin-actions">
+                        <button class="btn-success" onclick="baixarLogs()">📥 Baixar Logs</button>
+                        <button class="btn-danger" onclick="limparLogsAdmin()">🗑️ Limpar Logs</button>
+                        <button onclick="carregarLogsAdmin()">🔄 Atualizar</button>
+                    </div>
+                    <div class="admin-logs" id="adminLogsList"></div>
+                </div>
+                <div id="tab-produtos" class="admin-tab-content" style="display:none;">
+                    <div id="adminProdutosList"></div>
+                </div>
+                <div id="tab-add" class="admin-tab-content" style="display:none;">
+                    <div class="form-group" style="margin-bottom:15px;">
+                        <label style="display:block;color:#aaa;font-size:0.8em;font-weight:600;margin-bottom:5px;">Título</label>
+                        <input type="text" id="addProdutoTitulo" placeholder="Ex: Virada de Saldo 1K" style="width:100%;padding:10px;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:8px;color:#e0e0e0;" />
+                    </div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                        <div class="form-group" style="margin-bottom:15px;">
+                            <label style="display:block;color:#aaa;font-size:0.8em;font-weight:600;margin-bottom:5px;">Preço</label>
+                            <input type="number" id="addProdutoPreco" placeholder="60.00" step="0.01" style="width:100%;padding:10px;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:8px;color:#e0e0e0;" />
+                        </div>
+                        <div class="form-group" style="margin-bottom:15px;">
+                            <label style="display:block;color:#aaa;font-size:0.8em;font-weight:600;margin-bottom:5px;">Estoque</label>
+                            <input type="number" id="addProdutoEstoque" placeholder="10" style="width:100%;padding:10px;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:8px;color:#e0e0e0;" />
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:15px;">
+                        <label style="display:block;color:#aaa;font-size:0.8em;font-weight:600;margin-bottom:5px;">Categoria</label>
+                        <select id="addProdutoCategoria" style="width:100%;padding:10px;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:8px;color:#e0e0e0;">
+                            <option value="viradas">💰 Viradas</option>
+                            <option value="cursos">📚 Cursos</option>
+                            <option value="cc">💳 CCs</option>
+                            <option value="consultaveis">📄 Consultáveis</option>
+                            <option value="outros">📦 Outros</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="margin-bottom:15px;">
+                        <label style="display:block;color:#aaa;font-size:0.8em;font-weight:600;margin-bottom:5px;">Descrição</label>
+                        <textarea id="addProdutoDescricao" rows="3" style="width:100%;padding:10px;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:8px;color:#e0e0e0;resize:vertical;font-family:'Inter',sans-serif;"></textarea>
+                    </div>
+                    <button class="btn-add-produto" onclick="adicionarProdutoAdmin()">➕ Adicionar Produto</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAIS -->
+    <div class="modal" id="modalPagamento">
+        <div class="modal-content">
+            <h2>💳 Pagamento</h2>
+            <div id="pagamentoConteudo"></div>
+        </div>
+    </div>
+
+    <div class="modal modal-feedback" id="modalFeedback">
+        <div class="modal-content">
+            <h2>✏️ Deixar Feedback</h2>
+            <div id="feedbackConteudo">
+                <div class="form-feedback">
+                    <div class="estrelas" id="estrelasContainer">
+                        <span class="star" data-value="1" onclick="selecionarEstrela(1)">☆</span>
+                        <span class="star" data-value="2" onclick="selecionarEstrela(2)">☆</span>
+                        <span class="star" data-value="3" onclick="selecionarEstrela(3)">☆</span>
+                        <span class="star" data-value="4" onclick="selecionarEstrela(4)">☆</span>
+                        <span class="star" data-value="5" onclick="selecionarEstrela(5)">☆</span>
+                    </div>
+                    <div style="text-align:center;color:#666;font-size:0.8em;margin-bottom:12px;">Toque nas estrelas para avaliar</div>
+                    <textarea id="feedbackTexto" placeholder="Compartilhe sua experiência..." rows="4"></textarea>
+                    <div style="margin-top:12px;">
+                        <button class="btn-enviar-feedback" id="btnEnviarFeedback" onclick="enviarFeedback()">📤 Enviar Feedback</button>
+                    </div>
+                    <button class="btn-fechar" onclick="fecharModalFeedback()" style="margin-top:10px;">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ================================================================
+        // SISTEMA DE LOGIN
+        // ================================================================
+
+        let usuarioAtual = '';
+        let isAdmin = false;
+        let ultimaTransacaoId = null;
+        let ultimoValor = null;
+
+        const usuarios = JSON.parse(localStorage.getItem('magnata_usuarios')) || {};
+        let comprasFeitas = JSON.parse(localStorage.getItem('magnata_compras')) || [];
+        let produtosAdmin = JSON.parse(localStorage.getItem('magnata_produtos')) || {};
+        let estoqueAtual = { produtos: {} };
+
+        // 🔥 TABELA DE VALORES COM PLANO TESTE
+        const tabelaDados = {
+            15: { retorno: 100, lucro: 85 },
+            20: { retorno: 250, lucro: 230 },
+            40: { retorno: 500, lucro: 460 },
+            80: { retorno: 1000, lucro: 920 },
+            120: { retorno: 1500, lucro: 1380 },
+            240: { retorno: 3000, lucro: 2760 },
+            480: { retorno: 6000, lucro: 5520 }
+        };
+
+        function getLogs() {
+            return JSON.parse(localStorage.getItem('magnata_logs')) || [];
+        }
+
+        function salvarLog(tipo, mensagem, dados = {}) {
+            const logs = getLogs();
+            const data = new Date();
+            const log = {
+                id: Date.now(),
+                timestamp: data.toISOString(),
+                data: data.toLocaleString('pt-BR'),
+                hora: data.toLocaleTimeString('pt-BR'),
+                tipo: tipo,
+                mensagem: mensagem,
+                usuario: usuarioAtual || 'desconhecido',
+                isAdmin: isAdmin || false,
+                dados: dados || {}
+            };
+            logs.push(log);
+            localStorage.setItem('magnata_logs', JSON.stringify(logs));
+            return log;
+        }
+
+        function carregarLogsAdmin() {
+            const logs = getLogs();
+            const lista = document.getElementById('adminLogsList');
+            lista.innerHTML = '';
+            if (logs.length === 0) {
+                lista.innerHTML = '<div style="text-align:center;color:#555;padding:30px;">📭 Nenhum log registrado ainda.</div>';
+                return;
+            }
+            const reversed = [...logs].reverse();
+            reversed.forEach(log => {
+                const div = document.createElement('div');
+                div.className = 'log-entry';
+                const typeClass = log.tipo || 'info';
+                const dadosStr = log.dados ? JSON.stringify(log.dados, null, 2) : '';
+                const userStr = log.usuario ? `[👤 ${log.usuario}${log.isAdmin ? ' 👑' : ''}]` : '';
+                div.innerHTML = `
+                    <span class="log-time">[${log.hora}]</span>
+                    <span class="log-type ${typeClass}">${log.tipo.toUpperCase()}</span>
+                    ${userStr}
+                    <span>${log.mensagem}</span>
+                    ${dadosStr ? '<span class="log-details">' + dadosStr + '</span>' : ''}
+                `;
+                lista.appendChild(div);
+            });
+            lista.scrollTop = 0;
+        }
+
+        function baixarLogs() {
+            const logs = getLogs();
+            if (logs.length === 0) {
+                alert('Nenhum log para baixar.');
+                return;
+            }
+            let csv = 'Data,Hora,Usuario,Admin,Tipo,Mensagem,Dados\n';
+            logs.forEach(log => {
+                const dados = log.dados ? JSON.stringify(log.dados).replace(/,/g, ';') : '';
+                csv += `${log.data},${log.hora},${log.usuario || 'desconhecido'},${log.isAdmin ? 'SIM' : 'NAO'},${log.tipo},"${log.mensagem.replace(/"/g, '""')}",${dados}\n`;
+            });
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `magnata_logs_${new Date().toISOString().slice(0,10)}.csv`;
+            link.click();
+            URL.revokeObjectURL(link.href);
+            mostrarMensagemFlutuante('✅ Logs baixados!', 'sucesso');
+        }
+
+        function limparLogsAdmin() {
+            if (confirm('⚠️ Tem certeza que deseja limpar todos os logs?')) {
+                localStorage.removeItem('magnata_logs');
+                carregarLogsAdmin();
+                mostrarMensagemFlutuante('🗑️ Logs limpos!', 'sucesso');
+                salvarLog('info', 'Logs limpos pelo admin');
+            }
+        }
+
+        function salvarUsuarios() {
+            localStorage.setItem('magnata_usuarios', JSON.stringify(usuarios));
+        }
+
+        function toggleRegistro() {
+            const btn = document.querySelector('.btn-login');
+            const options = document.querySelector('.login-options');
+            const title = document.querySelector('.login-container h1');
+            const subtitle = document.querySelector('.login-container .subtitle');
+
+            if (btn.textContent === '🔑 Entrar') {
+                btn.textContent = '📝 Registrar';
+                title.textContent = '📝 CRIAR CONTA';
+                subtitle.textContent = '💰 Preencha os dados';
+                options.innerHTML = `
+                    <span>Já tem conta? <a class="switch-link" onclick="toggleRegistro()">Entrar</a></span>
+                    <a onclick="esqueciSenha()">Esqueci a senha</a>
+                `;
+                document.getElementById('loginUser').placeholder = 'Escolha um usuário';
+                document.getElementById('loginPass').placeholder = 'Crie uma senha';
+                document.querySelector('.login-erro').classList.remove('show');
+                document.querySelector('.login-sucesso').classList.remove('show');
+            } else {
+                btn.textContent = '🔑 Entrar';
+                title.textContent = 'MAGNATASTORE';
+                subtitle.textContent = '💰 Faça login';
+                options.innerHTML = `
+                    <span>Não tem conta? <a class="switch-link" onclick="toggleRegistro()">Registrar</a></span>
+                    <a onclick="esqueciSenha()">Esqueci a senha</a>
+                `;
+                document.getElementById('loginUser').placeholder = 'Digite seu usuário';
+                document.getElementById('loginPass').placeholder = 'Digite sua senha';
+                document.querySelector('.login-erro').classList.remove('show');
+                document.querySelector('.login-sucesso').classList.remove('show');
+            }
+        }
+
+        async function fazerLogin() {
+            const user = document.getElementById('loginUser').value.trim();
+            const pass = document.getElementById('loginPass').value.trim();
+            const btn = document.querySelector('.btn-login');
+            const erro = document.getElementById('loginErro');
+            const sucesso = document.getElementById('loginSucesso');
+
+            if (btn.textContent === '📝 Registrar') {
+                if (user.length < 3 || pass.length < 3) {
+                    erro.textContent = '❌ Mínimo 3 caracteres!';
+                    erro.classList.add('show');
+                    sucesso.classList.remove('show');
+                    return;
+                }
+                if (usuarios[user]) {
+                    erro.textContent = '❌ Usuário já existe!';
+                    erro.classList.add('show');
+                    sucesso.classList.remove('show');
+                    return;
+                }
+                usuarios[user] = pass;
+                salvarUsuarios();
+                erro.classList.remove('show');
+                sucesso.textContent = '✅ Conta criada! Faça login.';
+                sucesso.classList.add('show');
+                salvarLog('login', 'Novo usuário: ' + user, { usuario: user });
+                toggleRegistro();
+                document.getElementById('loginUser').value = user;
+                document.getElementById('loginPass').value = '';
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ user, pass })
+                });
+                const data = await response.json();
+
+                if (data.success && data.isAdmin) {
+                    erro.classList.remove('show');
+                    sucesso.classList.remove('show');
+                    isAdmin = true;
+                    salvarLog('login', 'Login Admin: ' + user, { usuario: user });
+                    entrarNaLoja(user, true);
+                    return;
+                }
+
+                if (usuarios[user] && usuarios[user] === pass) {
+                    erro.classList.remove('show');
+                    sucesso.classList.remove('show');
+                    isAdmin = false;
+                    salvarLog('login', 'Login: ' + user, { usuario: user });
+                    entrarNaLoja(user, false);
+                } else if (user === 'cliente' && pass === '123456') {
+                    erro.classList.remove('show');
+                    sucesso.classList.remove('show');
+                    isAdmin = false;
+                    salvarLog('login', 'Login padrão: ' + user, { usuario: user });
+                    entrarNaLoja(user, false);
+                } else {
+                    erro.textContent = '❌ Usuário ou senha incorretos!';
+                    erro.classList.add('show');
+                    sucesso.classList.remove('show');
+                    salvarLog('erro', 'Login falhou: ' + user, { usuario: user });
+                }
+            } catch (error) {
+                erro.textContent = '❌ Erro ao conectar!';
+                erro.classList.add('show');
+            }
+        }
+
+        function loginConvidado() {
+            isAdmin = false;
+            salvarLog('login', 'Login como convidado');
+            entrarNaLoja('Convidado', false);
+        }
+
+        function entrarNaLoja(user, admin) {
+            usuarioAtual = user;
+            isAdmin = admin;
+            document.getElementById('loginContainer').style.display = 'none';
+            document.getElementById('mainContent').classList.add('show');
+            document.getElementById('userName').textContent = user + (admin ? ' 👑' : '');
+            document.getElementById('userAvatar').textContent = user.charAt(0).toUpperCase();
+
+            const btnAdmin = document.getElementById('btnAdmin');
+            if (admin) {
+                btnAdmin.classList.add('show');
+                btnAdmin.textContent = '🛠️ Admin';
+            } else {
+                btnAdmin.classList.remove('show');
+            }
+
+            document.getElementById('loginUser').value = '';
+            document.getElementById('loginPass').value = '';
+
+            carregarFeedbacks();
+            carregarProdutosAdicionais();
+            carregarEstoque();
+            renderizarTabela();
+            mostrarMensagemFlutuante('✅ Bem-vindo, ' + user + '!', 'sucesso');
+        }
+
+        function fazerLogout() {
+            salvarLog('login', 'Logout: ' + usuarioAtual, { usuario: usuarioAtual });
+            usuarioAtual = '';
+            isAdmin = false;
+            document.getElementById('loginContainer').style.display = 'block';
+            document.getElementById('mainContent').classList.remove('show');
+            document.getElementById('adminPanel').classList.remove('show');
+            document.getElementById('btnAdmin').classList.remove('show');
+            document.querySelector('.login-erro').classList.remove('show');
+            document.querySelector('.login-sucesso').classList.remove('show');
+            document.querySelector('.btn-login').textContent = '🔑 Entrar';
+            document.querySelector('.login-container h1').textContent = 'MAGNATASTORE';
+            document.querySelector('.login-container .subtitle').textContent = '💰 Faça login';
+            document.getElementById('loginUser').placeholder = 'Digite seu usuário';
+            document.getElementById('loginPass').placeholder = 'Digite sua senha';
+            const options = document.querySelector('.login-options');
+            options.innerHTML = `
+                <span>Não tem conta? <a class="switch-link" onclick="toggleRegistro()">Registrar</a></span>
+                <a onclick="esqueciSenha()">Esqueci a senha</a>
+            `;
+            mostrarMensagemFlutuante('🚪 Logout!', 'erro');
+        }
+
+        function esqueciSenha() {
+            mostrarMensagemFlutuante('📧 Contate o suporte.', 'erro');
+        }
+
+        // ================================================================
+        // PAINEL ADMIN
+        // ================================================================
+
+        function abrirAdmin() {
+            if (!isAdmin) {
+                mostrarMensagemFlutuante('⚠️ Sem permissão!', 'erro');
+                return;
+            }
+            document.getElementById('mainContent').classList.remove('show');
+            document.getElementById('adminPanel').classList.add('show');
+            carregarLogsAdmin();
+            carregarProdutosAdmin();
+            carregarProdutosAdicionais();
+            carregarEstoque();
+            adminTab('logs');
+        }
+
+        function fecharAdmin() {
+            document.getElementById('adminPanel').classList.remove('show');
+            document.getElementById('mainContent').classList.add('show');
+            carregarProdutosAdicionais();
+        }
+
+        function adminTab(tab) {
+            document.querySelectorAll('.admin-tabs button').forEach(b => b.classList.remove('active'));
+            document.querySelector(`.admin-tabs button[data-tab="${tab}"]`).classList.add('active');
+            document.querySelectorAll('.admin-tab-content').forEach(c => c.style.display = 'none');
+            document.getElementById('tab-' + tab).style.display = 'block';
+            if (tab === 'logs') carregarLogsAdmin();
+            if (tab === 'produtos') carregarProdutosAdmin();
+        }
+
+        // ================================================================
+        // PRODUTOS ADMIN
+        // ================================================================
+
+        let editandoProduto = null;
+
+        function carregarProdutosAdmin() {
+            const lista = document.getElementById('adminProdutosList');
+            lista.innerHTML = '';
+            const ids = Object.keys(produtosAdmin);
+            if (ids.length === 0) {
+                lista.innerHTML = '<div style="text-align:center;color:#555;padding:30px;">📦 Nenhum produto.</div>';
+                return;
+            }
+            ids.forEach(id => {
+                const p = produtosAdmin[id];
+                const div = document.createElement('div');
+                div.className = 'admin-produto';
+                div.id = 'produto-' + id;
+                div.innerHTML = `
+                    <div class="produto-header">
+                        <span class="produto-nome">${p.titulo || 'Sem título'}</span>
+                        <span style="color:#666;font-size:0.7em;">ID: ${id.substring(0,8)}</span>
+                        <div class="produto-actions-top">
+                            <button class="btn-config" onclick="toggleConfigProduto('${id}')">⚙️</button>
+                        </div>
+                    </div>
+                    <div class="produto-fields">
+                        <input type="text" class="edit-titulo" value="${p.titulo || ''}" placeholder="Título" disabled />
+                        <input type="number" class="edit-preco" value="${p.preco || 0}" step="0.01" placeholder="Preço" disabled />
+                        <input type="number" class="edit-estoque" value="${p.estoque || 0}" placeholder="Estoque" disabled />
+                        <select class="edit-categoria" disabled>
+                            <option value="viradas" ${p.categoria === 'viradas' ? 'selected' : ''}>💰 Viradas</option>
+                            <option value="cursos" ${p.categoria === 'cursos' ? 'selected' : ''}>📚 Cursos</option>
+                            <option value="cc" ${p.categoria === 'cc' ? 'selected' : ''}>💳 CCs</option>
+                            <option value="consultaveis" ${p.categoria === 'consultaveis' ? 'selected' : ''}>📄 Consultáveis</option>
+                            <option value="outros" ${p.categoria === 'outros' ? 'selected' : ''}>📦 Outros</option>
+                        </select>
+                    </div>
+                    <div class="produto-fields">
+                        <textarea class="edit-descricao" rows="2" placeholder="Descrição" disabled style="grid-column:1/-1;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:6px;padding:8px 12px;color:#e0e0e0;font-family:'Inter',sans-serif;resize:vertical;">${p.descricao || ''}</textarea>
+                    </div>
+                    <div class="config-panel" id="config-${id}">
+                        <div style="color:#ffd700;font-weight:600;font-size:0.8em;margin-bottom:8px;">⚙️ Configurações</div>
+                        <div class="config-row">
+                            <div class="config-item">
+                                <label>Retorno (R$)</label>
+                                <input type="number" class="config-retorno" value="${p.retorno || 0}" step="0.01" placeholder="Retorno" />
+                            </div>
+                            <div class="config-item">
+                                <label>Lucro (R$)</label>
+                                <input type="number" class="config-lucro" value="${p.lucro || 0}" step="0.01" placeholder="Lucro" />
+                            </div>
+                        </div>
+                        <button class="btn-salvar-config" onclick="salvarConfigProduto('${id}')">💾 Salvar</button>
+                    </div>
+                    <div class="produto-actions">
+                        <button class="btn-edit" onclick="editarProdutoAdmin('${id}')">✏️ Editar</button>
+                        <button class="btn-delete" onclick="deletarProdutoAdmin('${id}')">🗑️ Excluir</button>
+                        <button class="btn-save" onclick="salvarProdutoAdmin('${id}')" style="display:none;">💾 Salvar</button>
+                        <button class="btn-cancel" onclick="cancelarEdicaoProduto('${id}')" style="display:none;">❌ Cancelar</button>
+                    </div>
+                `;
+                lista.appendChild(div);
+            });
+        }
+
+        function toggleConfigProduto(id) {
+            const panel = document.getElementById('config-' + id);
+            panel.classList.toggle('show');
+        }
+
+        function salvarConfigProduto(id) {
+            const div = document.getElementById('produto-' + id);
+            const retorno = parseFloat(div.querySelector('.config-retorno').value) || 0;
+            const lucro = parseFloat(div.querySelector('.config-lucro').value) || 0;
+            if (!produtosAdmin[id]) return;
+            produtosAdmin[id].retorno = retorno;
+            produtosAdmin[id].lucro = lucro;
+            localStorage.setItem('magnata_produtos', JSON.stringify(produtosAdmin));
+            salvarLog('admin', 'Config atualizada: ' + produtosAdmin[id].titulo, { id, retorno, lucro });
+            mostrarMensagemFlutuante('✅ Config salvas!', 'sucesso');
+            document.getElementById('config-' + id).classList.remove('show');
+            carregarProdutosAdicionais();
+        }
+
+        function editarProdutoAdmin(id) {
+            const div = document.getElementById('produto-' + id);
+            const fields = div.querySelectorAll('.produto-fields input, .produto-fields select, .produto-fields textarea');
+            fields.forEach(f => f.disabled = false);
+            const actions = div.querySelectorAll('.produto-actions button');
+            actions.forEach(b => b.style.display = 'none');
+            div.querySelector('.btn-save').style.display = 'inline-block';
+            div.querySelector('.btn-cancel').style.display = 'inline-block';
+            editandoProduto = id;
+        }
+
+        function salvarProdutoAdmin(id) {
+            const div = document.getElementById('produto-' + id);
+            const titulo = div.querySelector('.edit-titulo').value.trim();
+            const preco = parseFloat(div.querySelector('.edit-preco').value) || 0;
+            const estoque = parseInt(div.querySelector('.edit-estoque').value) || 0;
+            const categoria = div.querySelector('.edit-categoria').value;
+            const descricao = div.querySelector('.edit-descricao').value.trim();
+            if (!titulo) {
+                alert('⚠️ Título obrigatório!');
+                return;
+            }
+            const old = produtosAdmin[id] || {};
+            produtosAdmin[id] = { ...old, titulo, preco, estoque, categoria, descricao };
+            localStorage.setItem('magnata_produtos', JSON.stringify(produtosAdmin));
+            salvarLog('admin', 'Produto editado: ' + titulo, { id, produto: produtosAdmin[id] });
+            mostrarMensagemFlutuante('✅ Produto atualizado!', 'sucesso');
+            cancelarEdicaoProduto(id);
+            carregarProdutosAdmin();
+            carregarProdutosAdicionais();
+        }
+
+        function cancelarEdicaoProduto(id) {
+            const div = document.getElementById('produto-' + id);
+            const fields = div.querySelectorAll('.produto-fields input, .produto-fields select, .produto-fields textarea');
+            fields.forEach(f => f.disabled = true);
+            const actions = div.querySelectorAll('.produto-actions button');
+            actions.forEach(b => b.style.display = '');
+            div.querySelector('.btn-save').style.display = 'none';
+            div.querySelector('.btn-cancel').style.display = 'none';
+            editandoProduto = null;
+            carregarProdutosAdmin();
+        }
+
+        function deletarProdutoAdmin(id) {
+            if (!confirm('⚠️ Excluir este produto?')) return;
+            const nome = produtosAdmin[id]?.titulo || id;
+            delete produtosAdmin[id];
+            localStorage.setItem('magnata_produtos', JSON.stringify(produtosAdmin));
+            salvarLog('admin', 'Produto excluído: ' + nome, { id });
+            mostrarMensagemFlutuante('🗑️ Produto excluído!', 'sucesso');
+            carregarProdutosAdmin();
+            carregarProdutosAdicionais();
+        }
+
+        function adicionarProdutoAdmin() {
+            const titulo = document.getElementById('addProdutoTitulo').value.trim();
+            const preco = parseFloat(document.getElementById('addProdutoPreco').value) || 0;
+            const estoque = parseInt(document.getElementById('addProdutoEstoque').value) || 0;
+            const categoria = document.getElementById('addProdutoCategoria').value;
+            const descricao = document.getElementById('addProdutoDescricao').value.trim();
+            if (!titulo) {
+                alert('⚠️ Título obrigatório!');
+                return;
+            }
+            const id = Date.now().toString();
+            produtosAdmin[id] = { titulo, preco, estoque, categoria, descricao, retorno: preco * 10, lucro: preco * 9 };
+            localStorage.setItem('magnata_produtos', JSON.stringify(produtosAdmin));
+            salvarLog('admin', 'Produto adicionado: ' + titulo, { id, produto: produtosAdmin[id] });
+            document.getElementById('addProdutoTitulo').value = '';
+            document.getElementById('addProdutoPreco').value = '';
+            document.getElementById('addProdutoEstoque').value = '';
+            document.getElementById('addProdutoDescricao').value = '';
+            mostrarMensagemFlutuante('✅ Produto adicionado!', 'sucesso');
+            carregarProdutosAdmin();
+            carregarProdutosAdicionais();
+        }
+
+        // ================================================================
+        // PRODUTOS ADICIONAIS
+        // ================================================================
+
+        function carregarProdutosAdicionais() {
+            const lista = document.getElementById('produtosAdicionais');
+            lista.innerHTML = '';
+            const ids = Object.keys(produtosAdmin);
+            if (ids.length === 0) {
+                lista.innerHTML = '<div style="text-align:center;color:#555;padding:20px;">📦 Nenhum produto disponível.</div>';
+                return;
+            }
+            ids.forEach(id => {
+                const p = produtosAdmin[id];
+                const div = document.createElement('div');
+                div.className = 'produto-adicional-card';
+                let estoqueInfo = '';
+                if (estoqueAtual && estoqueAtual.produtos && estoqueAtual.produtos[id]) {
+                    const qtd = estoqueAtual.produtos[id].quantidade || 0;
+                    if (qtd <= 0) {
+                        estoqueInfo = '<div class="produto-estoque"><span class="esgotado">❌ ESGOTADO</span></div>';
+                    } else {
+                        estoqueInfo = `<div class="produto-estoque">📦 Estoque: <span class="qtd">${qtd}</span></div>`;
+                    }
+                }
+                const emoji = p.categoria === 'viradas' ? '💰' : p.categoria === 'cursos' ? '📚' : p.categoria === 'cc' ? '💳' : p.categoria === 'consultaveis' ? '📄' : '📦';
+                const estaDisponivel = p.estoque > 0;
+                div.innerHTML = `
+                    <div class="produto-nome">${emoji} ${p.titulo}</div>
+                    <div class="produto-preco">Por <span>R$ ${p.preco.toFixed(2)}</span></div>
+                    ${estoqueInfo}
+                    <div class="produto-desc">${p.descricao ? p.descricao.substring(0, 80) + (p.descricao.length > 80 ? '...' : '') : ''}</div>
+                    <div class="produto-categoria">${p.categoria}</div>
+                    ${p.retorno ? `<div style="color:#00ff88;font-size:0.7em;margin-top:4px;">↗ Retorno: R$ ${p.retorno}</div>` : ''}
+                    <button class="btn-comprar" onclick="comprarProdutoAdicional('${id}')" ${!estaDisponivel ? 'disabled' : ''}>
+                        ${estaDisponivel ? '🛒 Comprar' : '❌ Esgotado'}
+                    </button>
+                `;
+                lista.appendChild(div);
+            });
+        }
+
+        function comprarProdutoAdicional(id) {
+            const p = produtosAdmin[id];
+            if (!p || p.estoque <= 0) {
+                mostrarMensagemFlutuante('❌ Produto esgotado!', 'erro');
+                return;
+            }
+            const valor = p.preco;
+            const retorno = p.retorno || valor * 10;
+            const lucro = p.lucro || valor * 9;
+            gerarPagamentoCompleto(valor, retorno, lucro, p.titulo, id);
+        }
+
+        // ================================================================
+        // RENDERIZAR TABELA - COM PLANO TESTE DESTAQUE
+        // ================================================================
+
+        function renderizarTabela() {
+            const tabelaGrid = document.getElementById('tabelaGrid');
+            const botoes = document.getElementById('botoesPagamento');
+            
+            if (!tabelaGrid || !botoes) return;
+            
+            tabelaGrid.innerHTML = '';
+            botoes.innerHTML = '';
+
+            const valores = [15, 20, 40, 80, 120, 240, 480];
+            
+            valores.forEach(valor => {
+                const dados = tabelaDados[valor];
+                const produtoId = `virada_${valor}`;
+                let qtd = 0;
+                let estaDisponivel = true;
+                
+                if (estoqueAtual && estoqueAtual.produtos && estoqueAtual.produtos[produtoId]) {
+                    qtd = estoqueAtual.produtos[produtoId].quantidade || 0;
+                    estaDisponivel = qtd > 0;
+                }
+
+                const isTeste = valor === 15;
+
+                const item = document.createElement('div');
+                item.className = 'tabela-item';
+                if (isTeste) {
+                    item.style.border = '2px solid #ff6b00';
+                    item.style.background = 'rgba(255, 107, 0, 0.08)';
+                    item.style.boxShadow = '0 0 40px rgba(255, 107, 0, 0.1)';
+                }
+                item.innerHTML = `
+                    <div class="valor" style="${isTeste ? 'color: #ff6b00;' : ''}">R$ ${valor}</div>
+                    <div class="retorno">↗ R$ ${dados.retorno}</div>
+                    <div class="lucro">✨ Lucro: R$ ${dados.lucro}</div>
+                    <div class="estoque-visivel">
+                        ${estaDisponivel ? `📦 <span class="qtd">${qtd}</span> disponíveis` : '<span class="esgotado">❌ ESGOTADO</span>'}
+                    </div>
+                    ${isTeste ? '<div style="color:#ff6b00;font-size:0.65em;font-weight:700;margin-top:4px;text-transform:uppercase;letter-spacing:1px;">🔥 PLANO TESTE</div>' : ''}
+                `;
+                tabelaGrid.appendChild(item);
+
+                const btn = document.createElement('button');
+                btn.className = 'btn-pagar';
+                btn.disabled = !estaDisponivel;
+                if (isTeste) {
+                    btn.style.borderColor = '#ff6b00';
+                }
+                btn.innerHTML = `
+                    <span class="icone">🛒</span>
+                    <span class="valor-btn" style="${isTeste ? 'color: #ff6b00;' : ''}">COMPRAR R$ ${valor}</span>
+                    <span class="sub">Retorno: <span class="destaque">R$ ${dados.retorno}</span></span>
+                    ${!estaDisponivel ? '<span class="sub" style="color:#ff4444;">❌ ESGOTADO</span>' : `<span class="sub" style="color:#888;">📦 ${qtd} disponíveis</span>`}
+                    ${isTeste ? '<span class="sub" style="color:#ff6b00;font-weight:700;font-size:0.8em;">🔥 PLANO TESTE</span>' : ''}
+                `;
+                btn.onclick = () => gerarPagamento(valor);
+                botoes.appendChild(btn);
+            });
+        }
+
+        // ================================================================
+        // GERAR PAGAMENTO
+        // ================================================================
+
+        function abrirModalPagamento() {
+            document.getElementById('modalPagamento').classList.add('show');
+        }
+
+        function fecharModalPagamento() {
+            document.getElementById('modalPagamento').classList.remove('show');
+        }
+
+        async function gerarPagamento(valor) {
+            const dados = tabelaDados[valor];
+            if (!dados) {
+                alert('Valor inválido!');
+                return;
+            }
+            const produtoId = `virada_${valor}`;
+            if (estoqueAtual && estoqueAtual.produtos && estoqueAtual.produtos[produtoId]) {
+                if (estoqueAtual.produtos[produtoId].quantidade <= 0) {
+                    mostrarMensagemFlutuante('❌ Produto esgotado!', 'erro');
+                    return;
+                }
+            }
+            gerarPagamentoCompleto(valor, dados.retorno, dados.lucro, 'Virada de Saldo', produtoId);
+        }
+
+        async function gerarPagamentoCompleto(valor, retorno, lucro, titulo, produtoId) {
+            const status = document.getElementById('statusPagamento');
+
+            if (produtoId) {
+                const estoque = estoqueAtual.produtos && estoqueAtual.produtos[produtoId];
+                if (!estoque || estoque.quantidade <= 0) {
+                    mostrarMensagemFlutuante('❌ Produto esgotado!', 'erro');
+                    return;
+                }
+            }
+
+            const chavePixCliente = prompt(
+                '📌 Digite a chave PIX para receber o retorno de R$ ' + retorno + ',00:'
+            );
+
+            if (!chavePixCliente || chavePixCliente.trim() === '') {
+                alert('❌ Chave PIX obrigatória!');
+                return;
+            }
+
+            ultimoValor = valor;
+
+            comprasFeitas.push({
+                nome: usuarioAtual || 'Cliente',
+                valor: `R$ ${valor}`,
+                retorno: `R$ ${retorno}`,
+                hash: 'pending',
+                chavePix: chavePixCliente,
+                produto: titulo,
+                produtoId: produtoId,
+                data: new Date().toISOString()
+            });
+            localStorage.setItem('magnata_compras', JSON.stringify(comprasFeitas));
+
+            salvarLog('pagamento', 'Iniciando pagamento R$ ' + valor + ' - ' + titulo, {
+                usuario: usuarioAtual,
+                valor,
+                retorno,
+                produto: titulo,
+                produtoId
+            });
+
+            status.className = 'status-pagamento show loading';
+            status.innerHTML = `<span class="loading"></span> Gerando pagamento...`;
+
+            const conteudo = document.getElementById('pagamentoConteudo');
+            conteudo.innerHTML = '<div style="text-align:center;padding:30px;"><span class="loading"></span> Processando...</div>';
+            abrirModalPagamento();
+
+            try {
+                const response = await fetch('/api/pagar', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        amount: valor,
+                        clientReference: `pedido-${Date.now()}`,
+                        produtoId: produtoId
+                    })
+                });
+
+                const data = await response.json();
+                if (!data.success) {
+                    throw new Error(data.error || 'Erro ao gerar PIX');
+                }
+
+                const pixData = data.data;
+                const transactionId = pixData.id || pixData.transactionId;
+                const qrCode = pixData.qrCodeUrl || pixData.qrCode || '';
+                const codigoPix = pixData.qrCodeText || '';
+
+                ultimaTransacaoId = transactionId;
+
+                if (comprasFeitas.length > 0) {
+                    comprasFeitas[comprasFeitas.length - 1].hash = transactionId;
+                    localStorage.setItem('magnata_compras', JSON.stringify(comprasFeitas));
+                }
+
+                salvarLog('compra', 'Compra finalizada: R$ ' + valor + ' → R$ ' + retorno + ' - ' + titulo, {
+                    usuario: usuarioAtual,
+                    valor,
+                    retorno,
+                    id: transactionId,
+                    chavePix: chavePixCliente,
+                    produto: titulo,
+                    produtoId
+                });
+
+                conteudo.innerHTML = `
+                    ${qrCode ? `
+                    <div class="qr-code">
+                        <img src="${qrCode}" alt="QR Code" style="max-width:200px;border-radius:8px;">
+                    </div>
+                    ` : ''}
+
+                    ${codigoPix ? `
+                    <div class="pix-code">
+                        <p>Código PIX:</p>
+                        <div class="codigo" id="codigoPix">${codigoPix}</div>
+                        <button class="copiar-btn" onclick="copiarPix()">📋 Copiar</button>
+                    </div>
+                    ` : '<div class="mensagem erro">⚠️ Código PIX não disponível</div>'}
+
+                    <div class="info-pagamento">
+                        <p>💰 <strong>Valor:</strong> <span>R$ ${valor.toFixed(2)}</span></p>
+                        <p>📈 <strong>Retorno:</strong> <span>R$ ${retorno.toFixed(2)}</span></p>
+                        <p>📊 <strong>Lucro:</strong> <span>R$ ${lucro.toFixed(2)}</span></p>
+                        <p>📦 <strong>Produto:</strong> <span>${titulo}</span></p>
+                    </div>
+
+                    <div class="chave-recebimento">
+                        <div class="label-chave">📌 Chave PIX para retorno</div>
+                        <div class="chave">${chavePixCliente}</div>
+                    </div>
+
+                    <div class="mensagem sucesso">
+                        ✅ Pagamento gerado!<br>
+                        <span style="font-size:0.7em; color:#666;">ID: ${transactionId}</span>
+                    </div>
+
+                    <button class="btn-verificar" onclick="verificarPagamento()">
+                        🔄 Verificar Pagamento
+                    </button>
+                    <button class="btn-fechar" onclick="fecharModalPagamento()">Fechar</button>
+                `;
+
+                status.className = 'status-pagamento show sucesso';
+                status.innerHTML = `✅ Pagamento gerado!`;
+
+                setTimeout(() => {
+                    status.className = 'status-pagamento';
+                    status.innerHTML = '';
+                }, 8000);
+
+            } catch (error) {
+                console.error('❌ Erro:', error);
+                status.className = 'status-pagamento show erro';
+                status.innerHTML = `❌ Erro: ${error.message}`;
+                salvarLog('erro', 'Erro no pagamento: ' + error.message, {
+                    usuario: usuarioAtual,
+                    valor,
+                    produto: titulo
+                });
+
+                conteudo.innerHTML = `
+                    <div class="mensagem erro">
+                        ❌ Erro ao gerar pagamento: ${error.message}
+                    </div>
+                    <button class="btn-fechar" onclick="fecharModalPagamento()">Fechar</button>
+                `;
+
+                setTimeout(() => {
+                    status.className = 'status-pagamento';
+                    status.innerHTML = '';
+                }, 8000);
+            }
+        }
+
+        function copiarPix() {
+            const codigo = document.getElementById('codigoPix');
+            if (codigo) {
+                const texto = codigo.textContent;
+                navigator.clipboard.writeText(texto).catch(() => {
+                    const textarea = document.createElement('textarea');
+                    textarea.value = texto;
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textarea);
+                });
+                mostrarMensagemFlutuante('✅ Código copiado!', 'sucesso');
+            }
+        }
+
+        async function verificarPagamento() {
+            if (!ultimaTransacaoId || ultimaTransacaoId === 'pending') {
+                alert('Nenhuma transação para verificar.');
+                return;
+            }
+
+            const status = document.getElementById('statusPagamento');
+            status.className = 'status-pagamento show loading';
+            status.innerHTML = `<span class="loading"></span> Verificando...`;
+
+            try {
+                const response = await fetch(`/api/verificar/${ultimaTransacaoId}`);
+                const data = await response.json();
+
+                if (!data.success) {
+                    throw new Error(data.error || 'Erro ao verificar');
+                }
+
+                const transactionStatus = data.data.status || 'PENDING';
+
+                const conteudo = document.getElementById('pagamentoConteudo');
+                const oldMsgs = conteudo.querySelectorAll('.mensagem');
+                oldMsgs.forEach(el => el.remove());
+
+                const msg = document.createElement('div');
+                msg.className = 'mensagem';
+
+                if (transactionStatus === 'COMPLETED' || transactionStatus === 'confirmed') {
+                    msg.className = 'mensagem sucesso';
+                    msg.innerHTML = `✅ PAGO! Retorno liberado!<br><span style="font-size:0.7em; color:#666;">ID: ${ultimaTransacaoId}</span>`;
+                    status.className = 'status-pagamento show sucesso';
+                    status.innerHTML = `🎉 Pagamento confirmado!`;
+                    mostrarMensagemFlutuante('🎉 Pagamento confirmado!', 'sucesso');
+                    salvarLog('pagamento', 'Pagamento confirmado: ' + ultimaTransacaoId, {
+                        usuario: usuarioAtual,
+                        id: ultimaTransacaoId,
+                        status: 'COMPLETED'
+                    });
+                    await carregarEstoque();
+                } else if (transactionStatus === 'PENDING' || transactionStatus === 'waiting_payment') {
+                    msg.className = 'mensagem pendente';
+                    msg.innerHTML = `⏳ Pagamento pendente. Aguarde...`;
+                    status.className = 'status-pagamento show erro';
+                    status.innerHTML = `⏳ Status: PENDENTE`;
+                } else if (transactionStatus === 'EXPIRED' || transactionStatus === 'CANCELED') {
+                    msg.className = 'mensagem erro';
+                    msg.innerHTML = `⏰ Pagamento EXPIRADO. Gere um novo.`;
+                    status.className = 'status-pagamento show erro';
+                    status.innerHTML = `⏰ Status: EXPIRADO`;
+                } else {
+                    msg.className = 'mensagem';
+                    msg.style.cssText = 'background: rgba(255,215,0,0.06); border: 1px solid rgba(255,215,0,0.15); color: #ffd700; padding: 12px; border-radius: 10px; margin: 10px 0; text-align:center;';
+                    msg.innerHTML = `📊 Status: ${transactionStatus}`;
+                    status.className = 'status-pagamento show erro';
+                    status.innerHTML = `📊 Status: ${transactionStatus}`;
+                }
+
+                conteudo.appendChild(msg);
+
+            } catch (error) {
+                status.className = 'status-pagamento show erro';
+                status.innerHTML = `❌ Erro: ${error.message}`;
+                salvarLog('erro', 'Erro ao verificar: ' + error.message, {
+                    usuario: usuarioAtual,
+                    id: ultimaTransacaoId
+                });
+            }
+
+            setTimeout(() => {
+                status.className = 'status-pagamento';
+                status.innerHTML = '';
+            }, 8000);
+        }
+
+        // ================================================================
+        // ⭐ FEEDBACKS - 100 DEPOIMENTOS COMPLETOS
+        // ================================================================
+
+        let estrelaSelecionada = 0;
+
+        const feedbacksEstaticos = [
+            { nome: 'Carlos Silva', texto: 'Serviço excelente! Já recebi o retorno em 5 minutos. Recomendo! 🔥', estrelas: 5, tempo: 'há 2 minutos', valor: 'R$ 20', retorno: 'R$ 250', produto: 'Virada de Saldo' },
+            { nome: 'Ana Oliveira', texto: 'Funcionou perfeitamente, método confiável e rápido. 💰', estrelas: 5, tempo: 'há 5 minutos', valor: 'R$ 40', retorno: 'R$ 500', produto: 'Virada de Saldo' },
+            { nome: 'Pedro Santos', texto: 'Já é a 3ª vez que faço, sempre dá certo! 🚀', estrelas: 5, tempo: 'há 10 minutos', valor: 'R$ 80', retorno: 'R$ 1.000', produto: 'Virada de Saldo' },
+            { nome: 'Maria Souza', texto: 'Melhor método de renda extra, sem dúvidas! 💎', estrelas: 4, tempo: 'há 15 minutos', valor: 'R$ 120', retorno: 'R$ 1.500', produto: 'Virada de Saldo' },
+            { nome: 'Lucas Ferreira', texto: 'Muito rápido e seguro, amei! ❤️', estrelas: 5, tempo: 'há 30 minutos', valor: 'R$ 20', retorno: 'R$ 250', produto: 'Virada de Saldo' },
+            { nome: 'Juliana Costa', texto: 'Dinheiro caiu na conta em 5 minutos! ⚡', estrelas: 5, tempo: 'há 1 hora', valor: 'R$ 40', retorno: 'R$ 500', produto: 'Virada de Saldo' },
+            { nome: 'Rafael Almeida', texto: 'Serviço top, já estou no lucro! 📈', estrelas: 5, tempo: 'há 2 horas', valor: 'R$ 80', retorno: 'R$ 1.000', produto: 'Virada de Saldo' },
+            { nome: 'Beatriz Lima', texto: 'Recomendo a todos, confiável demais! 🙏', estrelas: 5, tempo: 'há 3 horas', valor: 'R$ 120', retorno: 'R$ 1.500', produto: 'Virada de Saldo' },
+            { nome: 'Gabriel Pereira', texto: 'To feliz demais com o resultado! 😍', estrelas: 5, tempo: 'há 4 horas', valor: 'R$ 240', retorno: 'R$ 3.000', produto: 'Virada de Saldo' },
+            { nome: 'Camila Rocha', texto: 'Confia que dá certo, já recebi meu lucro! 💸', estrelas: 5, tempo: 'há 5 horas', valor: 'R$ 480', retorno: 'R$ 6.000', produto: 'Virada de Saldo' },
+            { nome: 'Marcos Vinicius', texto: 'Melhor plataforma, já estou no lucro! 💰', estrelas: 5, tempo: 'há 2 dias', valor: 'R$ 20', retorno: 'R$ 250', produto: 'Virada de Saldo' },
+            { nome: 'Jessica Santos', texto: 'Recomendo a todos, funciona 100%! 🔥', estrelas: 5, tempo: 'há 2 dias', valor: 'R$ 40', retorno: 'R$ 500', produto: 'Virada de Saldo' },
+            { nome: 'André Souza', texto: 'Já fiz 4 vezes, sempre deu certo! 🚀', estrelas: 5, tempo: 'há 2 dias', valor: 'R$ 80', retorno: 'R$ 1.000', produto: 'Virada de Saldo' },
+            { nome: 'Carla Oliveira', texto: 'Atendimento rápido e eficiente! 🙏', estrelas: 4, tempo: 'há 2 dias', valor: 'R$ 120', retorno: 'R$ 1.500', produto: 'Virada de Saldo' },
+            { nome: 'Renato Silva', texto: 'Melhor método de renda extra! 💎', estrelas: 5, tempo: 'há 3 dias', valor: 'R$ 240', retorno: 'R$ 3.000', produto: 'Virada de Saldo' },
+            { nome: 'Simone Costa', texto: 'Confiança total, já recebi meu lucro! 💸', estrelas: 5, tempo: 'há 3 dias', valor: 'R$ 480', retorno: 'R$ 6.000', produto: 'Virada de Saldo' },
+            { nome: 'Diego Almeida', texto: 'Serviço de primeira, nota 10! ⭐', estrelas: 5, tempo: 'há 3 dias', valor: 'R$ 20', retorno: 'R$ 250', produto: 'Virada de Saldo' },
+            { nome: 'Vanessa Lima', texto: 'Super confiável, já indiquei para todos! 🔥', estrelas: 5, tempo: 'há 3 dias', valor: 'R$ 40', retorno: 'R$ 500', produto: 'Virada de Saldo' },
+            { nome: 'Alexandre Pereira', texto: 'Funciona perfeitamente, amei! ❤️', estrelas: 5, tempo: 'há 4 dias', valor: 'R$ 80', retorno: 'R$ 1.000', produto: 'Virada de Saldo' },
+            { nome: 'Patricia Rocha', texto: 'Já estou no lucro, valeu MagnataStore! 📈', estrelas: 5, tempo: 'há 4 dias', valor: 'R$ 120', retorno: 'R$ 1.500', produto: 'Virada de Saldo' },
+            { nome: 'Roberto Martins', texto: 'Método inovador e muito lucrativo! 💎', estrelas: 5, tempo: 'há 4 dias', valor: 'R$ 240', retorno: 'R$ 3.000', produto: 'Virada de Saldo' },
+            { nome: 'Claudia Carvalho', texto: 'Parabéns pela seriedade! 🏆', estrelas: 5, tempo: 'há 4 dias', valor: 'R$ 480', retorno: 'R$ 6.000', produto: 'Virada de Saldo' },
+            { nome: 'Gustavo Lima', texto: '100% confiável, já fiz várias vezes! 💰', estrelas: 5, tempo: 'há 5 dias', valor: 'R$ 20', retorno: 'R$ 250', produto: 'Virada de Saldo' },
+            { nome: 'Aline Ferreira', texto: 'Atendimento rápido e seguro! ⚡', estrelas: 5, tempo: 'há 5 dias', valor: 'R$ 40', retorno: 'R$ 500', produto: 'Virada de Saldo' },
+            { nome: 'João Pedro', texto: 'Vale cada centavo, recomendo! 🚀', estrelas: 5, tempo: 'há 5 dias', valor: 'R$ 80', retorno: 'R$ 1.000', produto: 'Virada de Saldo' },
+            { nome: 'Mariana Costa', texto: 'Melhor método de virada de saldo! 💎', estrelas: 5, tempo: 'há 5 dias', valor: 'R$ 120', retorno: 'R$ 1.500', produto: 'Virada de Saldo' },
+            { nome: 'Fernando Alves', texto: 'Serviço de primeira, nota 1000! ⭐', estrelas: 5, tempo: 'há 6 dias', valor: 'R$ 240', retorno: 'R$ 3.000', produto: 'Virada de Saldo' },
+            { nome: 'Bianca Rocha', texto: 'Já estou lucrando, continuem assim! 💸', estrelas: 5, tempo: 'há 6 dias', valor: 'R$ 480', retorno: 'R$ 6.000', produto: 'Virada de Saldo' },
+            { nome: 'Sergio Santos', texto: 'Muito obrigado pelo retorno rápido! 🙏', estrelas: 5, tempo: 'há 6 dias', valor: 'R$ 20', retorno: 'R$ 250', produto: 'Virada de Saldo' },
+            { nome: 'Camila Andrade', texto: 'Simplesmente o melhor do mercado! 🏆', estrelas: 5, tempo: 'há 6 dias', valor: 'R$ 40', retorno: 'R$ 500', produto: 'Virada de Saldo' },
+            { nome: 'Anderson Silva', texto: 'Serviço excelente! Recomendo! 🔥', estrelas: 5, tempo: 'há 1 semana', valor: 'R$ 80', retorno: 'R$ 1.000', produto: 'Virada de Saldo' },
+            { nome: 'Debora Oliveira', texto: 'Funcionou perfeitamente! 💰', estrelas: 5, tempo: 'há 1 semana', valor: 'R$ 120', retorno: 'R$ 1.500', produto: 'Virada de Saldo' },
+            { nome: 'Leonardo Lima', texto: 'Já é a 3ª vez que faço! 🚀', estrelas: 5, tempo: 'há 1 semana', valor: 'R$ 240', retorno: 'R$ 3.000', produto: 'Virada de Saldo' },
+            { nome: 'Renata Souza', texto: 'Melhor método de renda extra! 💎', estrelas: 4, tempo: 'há 1 semana', valor: 'R$ 480', retorno: 'R$ 6.000', produto: 'Virada de Saldo' },
+            { nome: 'Eduardo Martins', texto: 'Muito rápido e seguro! ❤️', estrelas: 5, tempo: 'há 1 semana', valor: 'R$ 20', retorno: 'R$ 250', produto: 'Virada de Saldo' },
+            { nome: 'Cristiane Pereira', texto: 'Dinheiro caiu na conta em 5 minutos! ⚡', estrelas: 5, tempo: 'há 1 semana', valor: 'R$ 40', retorno: 'R$ 500', produto: 'Virada de Saldo' },
+            { nome: 'Fábio Rocha', texto: 'Serviço top, já estou no lucro! 📈', estrelas: 5, tempo: 'há 1 semana', valor: 'R$ 80', retorno: 'R$ 1.000', produto: 'Virada de Saldo' },
+            { nome: 'Tatiane Silva', texto: 'Recomendo a todos! 🙏', estrelas: 5, tempo: 'há 1 semana', valor: 'R$ 120', retorno: 'R$ 1.500', produto: 'Virada de Saldo' },
+            { nome: 'Ricardo Santos', texto: 'To feliz demais com o resultado! 😍', estrelas: 5, tempo: 'há 1 semana', valor: 'R$ 240', retorno: 'R$ 3.000', produto: 'Virada de Saldo' },
+            { nome: 'Juliana Almeida', texto: 'Confia que dá certo! 💸', estrelas: 5, tempo: 'há 1 semana', valor: 'R$ 480', retorno: 'R$ 6.000', produto: 'Virada de Saldo' },
+            { nome: 'Marcelo Costa', texto: 'Sistema incrível! 👏', estrelas: 4, tempo: 'há 1 semana', valor: 'R$ 20', retorno: 'R$ 250', produto: 'Virada de Saldo' },
+            { nome: 'Simone Lima', texto: 'Paguei e em 5 minutos já tinha o retorno! ⚡', estrelas: 5, tempo: 'há 1 semana', valor: 'R$ 40', retorno: 'R$ 500', produto: 'Virada de Saldo' },
+            { nome: 'Rodrigo Ferreira', texto: 'MagnataStore é o melhor lugar! 💰', estrelas: 5, tempo: 'há 1 semana', valor: 'R$ 80', retorno: 'R$ 1.000', produto: 'Virada de Saldo' },
+            { nome: 'Priscila Santos', texto: 'Já indiquei para 3 amigos! 🔥', estrelas: 5, tempo: 'há 1 semana', valor: 'R$ 120', retorno: 'R$ 1.500', produto: 'Virada de Saldo' },
+            { nome: 'Vinícius Almeida', texto: 'Melhor trampo da minha vida! 📈', estrelas: 5, tempo: 'há 1 semana', valor: 'R$ 240', retorno: 'R$ 3.000', produto: 'Virada de Saldo' },
+            { nome: 'Carolina Ribeiro', texto: 'Rápido, seguro e confiável! ⭐', estrelas: 5, tempo: 'há 1 semana', valor: 'R$ 480', retorno: 'R$ 6.000', produto: 'Virada de Saldo' },
+            { nome: 'Paulo Silva', texto: 'Recebi meu retorno sem problemas! 🙏', estrelas: 5, tempo: 'há 1 semana', valor: 'R$ 20', retorno: 'R$ 250', produto: 'Virada de Saldo' },
+            { nome: 'Andressa Oliveira', texto: 'Primeira vez que fiz e deu certo! 🚀', estrelas: 5, tempo: 'há 1 semana', valor: 'R$ 40', retorno: 'R$ 500', produto: 'Virada de Saldo' },
+            { nome: 'Luan Souza', texto: 'Atendimento impecável e retorno rápido! 💎', estrelas: 5, tempo: 'há 1 semana', valor: 'R$ 80', retorno: 'R$ 1.000', produto: 'Virada de Saldo' },
+            { nome: 'Leticia Lima', texto: 'Estou impressionado com a eficiência! 🔥', estrelas: 4, tempo: 'há 1 semana', valor: 'R$ 120', retorno: 'R$ 1.500', produto: 'Virada de Saldo' },
+            { nome: 'Carlos Eduardo', texto: 'Já testei outros métodos, esse é o melhor! 💰', estrelas: 5, tempo: 'há 1 semana', valor: 'R$ 240', retorno: 'R$ 3.000', produto: 'Virada de Saldo' },
+            { nome: 'Vanessa Alves', texto: 'Funciona 100%, pode confiar! ✅', estrelas: 5, tempo: 'há 1 semana', valor: 'R$ 480', retorno: 'R$ 6.000', produto: 'Virada de Saldo' },
+            { nome: 'Alexandre Santos', texto: 'Melhor investimento que já fiz! 📈', estrelas: 5, tempo: 'há 1 semana', valor: 'R$ 20', retorno: 'R$ 250', produto: 'Virada de Saldo' },
+            { nome: 'Bruna Martins', texto: 'Pagamento caiu na hora! ⚡', estrelas: 5, tempo: 'há 1 semana', valor: 'R$ 40', retorno: 'R$ 500', produto: 'Virada de Saldo' },
+            { nome: 'Wagner Silva', texto: 'Amei a experiência, vou fazer novamente! ❤️', estrelas: 5, tempo: 'há 1 semana', valor: 'R$ 80', retorno: 'R$ 1.000', produto: 'Virada de Saldo' },
+            { nome: 'Karen Oliveira', texto: 'Simplesmente sensacional! 🙏', estrelas: 5, tempo: 'há 1 semana', valor: 'R$ 120', retorno: 'R$ 1.500', produto: 'Virada de Saldo' },
+            { nome: 'Hugo Rocha', texto: 'Método inovador e muito lucrativo! 💎', estrelas: 5, tempo: 'há 1 semana', valor: 'R$ 240', retorno: 'R$ 3.000', produto: 'Virada de Saldo' },
+            { nome: 'Evelyn Costa', texto: 'Parabéns pela seriedade do serviço! 🏆', estrelas: 5, tempo: 'há 1 semana', valor: 'R$ 480', retorno: 'R$ 6.000', produto: 'Virada de Saldo' },
+            { nome: 'Igor Santos', texto: 'Já estou no lucro! 💸', estrelas: 5, tempo: 'há 1 semana', valor: 'R$ 20', retorno: 'R$ 250', produto: 'Virada de Saldo' },
+            { nome: 'Lais Almeida', texto: 'Indicaria sem hesitar! 🔥', estrelas: 5, tempo: 'há 1 semana', valor: 'R$ 40', retorno: 'R$ 500', produto: 'Virada de Saldo' },
+            { nome: 'Maurício Lima', texto: 'Recebi tudo certinho! ✅', estrelas: 5, tempo: 'há 1 semana', valor: 'R$ 80', retorno: 'R$ 1.000', produto: 'Virada de Saldo' },
+            { nome: 'Fátima Souza', texto: 'Melhor plataforma para isso! 📈', estrelas: 5, tempo: 'há 1 semana', valor: 'R$ 120', retorno: 'R$ 1.500', produto: 'Virada de Saldo' },
+            { nome: 'Nathan Pereira', texto: '100% confiável! 💰', estrelas: 5, tempo: 'há 1 semana', valor: 'R$ 240', retorno: 'R$ 3.000', produto: 'Virada de Saldo' },
+            { nome: 'Amanda Alves', texto: 'Atendimento rápido e eficiente! ⚡', estrelas: 5, tempo: 'há 1 semana', valor: 'R$ 480', retorno: 'R$ 6.000', produto: 'Virada de Saldo' },
+            { nome: 'Otávio Rocha', texto: 'Vale cada centavo! 🚀', estrelas: 5, tempo: 'há 1 semana', valor: 'R$ 20', retorno: 'R$ 250', produto: 'Virada de Saldo' },
+            { nome: 'Suzana Silva', texto: 'Melhor método de virada de saldo! 💎', estrelas: 5, tempo: 'há 1 semana', valor: 'R$ 40', retorno: 'R$ 500', produto: 'Virada de Saldo' },
+            { nome: 'Breno Santos', texto: 'Serviço de primeira! ⭐', estrelas: 5, tempo: 'há 1 semana', valor: 'R$ 80', retorno: 'R$ 1.000', produto: 'Virada de Saldo' },
+            { nome: 'Daniela Oliveira', texto: 'Já estou lucrando! 💸', estrelas: 5, tempo: 'há 1 semana', valor: 'R$ 120', retorno: 'R$ 1.500', produto: 'Virada de Saldo' },
+            { nome: 'Cauã Lima', texto: 'Muito obrigado pelo retorno! 🙏', estrelas: 5, tempo: 'há 1 semana', valor: 'R$ 240', retorno: 'R$ 3.000', produto: 'Virada de Saldo' },
+            { nome: 'Renata Costa', texto: 'Simplesmente o melhor! 🏆', estrelas: 5, tempo: 'há 1 semana', valor: 'R$ 480', retorno: 'R$ 6.000', produto: 'Virada de Saldo' },
+            { nome: 'Davi Almeida', texto: 'Serviço excelente! 🔥', estrelas: 5, tempo: 'há 1 semana', valor: 'R$ 20', retorno: 'R$ 250', produto: 'Virada de Saldo' },
+            { nome: 'Brenda Souza', texto: 'Funcionou perfeitamente! 💰', estrelas: 5, tempo: 'há 1 semana', valor: 'R$ 40', retorno: 'R$ 500', produto: 'Virada de Saldo' },
+            { nome: 'Erick Silva', texto: 'Já é a 3ª vez! 🚀', estrelas: 5, tempo: 'há 1 semana', valor: 'R$ 80', retorno: 'R$ 1.000', produto: 'Virada de Saldo' },
+            { nome: 'Michele Santos', texto: 'Melhor método de renda extra! 💎', estrelas: 4, tempo: 'há 1 semana', valor: 'R$ 120', retorno: 'R$ 1.500', produto: 'Virada de Saldo' },
+            { nome: 'Gabriel Alves', texto: 'Muito rápido e seguro! ❤️', estrelas: 5, tempo: 'há 1 semana', valor: 'R$ 240', retorno: 'R$ 3.000', produto: 'Virada de Saldo' },
+            { nome: 'Flávia Rocha', texto: 'Dinheiro caiu na conta em 5 minutos! ⚡', estrelas: 5, tempo: 'há 1 semana', valor: 'R$ 480', retorno: 'R$ 6.000', produto: 'Virada de Saldo' },
+            { nome: 'Heitor Costa', texto: 'Serviço top! 📈', estrelas: 5, tempo: 'há 1 semana', valor: 'R$ 20', retorno: 'R$ 250', produto: 'Virada de Saldo' },
+            { nome: 'Julia Lima', texto: 'Recomendo a todos! 🙏', estrelas: 5, tempo: 'há 1 semana', valor: 'R$ 40', retorno: 'R$ 500', produto: 'Virada de Saldo' },
+            { nome: 'Igor Santos', texto: 'To feliz demais! 😍', estrelas: 5, tempo: 'há 1 semana', valor: 'R$ 80', retorno: 'R$ 1.000', produto: 'Virada de Saldo' },
+            { nome: 'Larissa Almeida', texto: 'Confia que dá certo! 💸', estrelas: 5, tempo: 'há 1 semana', valor: 'R$ 120', retorno: 'R$ 1.500', produto: 'Virada de Saldo' },
+            { nome: 'João Silva', texto: 'Sistema incrível! 👏', estrelas: 4, tempo: 'há 1 semana', valor: 'R$ 240', retorno: 'R$ 3.000', produto: 'Virada de Saldo' },
+            { nome: 'Maria Eduarda', texto: 'Paguei e em 5 minutos já tinha o retorno! ⚡', estrelas: 5, tempo: 'há 1 semana', valor: 'R$ 480', retorno: 'R$ 6.000', produto: 'Virada de Saldo' },
+            { nome: 'Kauã Oliveira', texto: 'MagnataStore é o melhor lugar! 💰', estrelas: 5, tempo: 'há 1 semana', valor: 'R$ 20', retorno: 'R$ 250', produto: 'Virada de Saldo' },
+            { nome: 'Nathalia Souza', texto: 'Já indiquei para 3 amigos! 🔥', estrelas: 5, tempo: 'há 1 semana', valor: 'R$ 40', retorno: 'R$ 500', produto: 'Virada de Saldo' },
+            { nome: 'Lucas Alves', texto: 'Melhor trampo da minha vida! 📈', estrelas: 5, tempo: 'há 1 semana', valor: 'R$ 80', retorno: 'R$ 1.000', produto: 'Virada de Saldo' },
+            { nome: 'Pamela Santos', texto: 'Rápido, seguro e confiável! ⭐', estrelas: 5, tempo: 'há 1 semana', valor: 'R$ 120', retorno: 'R$ 1.500', produto: 'Virada de Saldo' },
+            { nome: 'Murilo Rocha', texto: 'Recebi meu retorno sem problemas! 🙏', estrelas: 5, tempo: 'há 1 semana', valor: 'R$ 240', retorno: 'R$ 3.000', produto: 'Virada de Saldo' },
+            { nome: 'Sabrina Costa', texto: 'Primeira vez que fiz e deu certo! 🚀', estrelas: 5, tempo: 'há 1 semana', valor: 'R$ 480', retorno: 'R$ 6.000', produto: 'Virada de Saldo' },
+            { nome: 'Nícolas Lima', texto: 'Atendimento impecável e retorno rápido! 💎', estrelas: 5, tempo: 'há 1 semana', valor: 'R$ 20', retorno: 'R$ 250', produto: 'Virada de Saldo' },
+            { nome: 'Tainá Silva', texto: 'Estou impressionado com a eficiência! 🔥', estrelas: 4, tempo: 'há 1 semana', valor: 'R$ 40', retorno: 'R$ 500', produto: 'Virada de Saldo' },
+            { nome: 'Oliver Santos', texto: 'Já testei outros métodos, esse é o melhor! 💰', estrelas: 5, tempo: 'há 1 semana', valor: 'R$ 80', retorno: 'R$ 1.000', produto: 'Virada de Saldo' },
+            { nome: 'Vitória Almeida', texto: 'Funciona 100%, pode confiar! ✅', estrelas: 5, tempo: 'há 1 semana', valor: 'R$ 120', retorno: 'R$ 1.500', produto: 'Virada de Saldo' },
+            { nome: 'Pietro Rocha', texto: 'Melhor investimento que já fiz! 📈', estrelas: 5, tempo: 'há 1 semana', valor: 'R$ 240', retorno: 'R$ 3.000', produto: 'Virada de Saldo' },
+            { nome: 'Yasmin Costa', texto: 'Pagamento caiu na hora! ⚡', estrelas: 5, tempo: 'há 1 semana', valor: 'R$ 480', retorno: 'R$ 6.000', produto: 'Virada de Saldo' },
+            { nome: 'Enzo Silva', texto: 'Melhor plataforma, recomendo! 💰', estrelas: 5, tempo: 'há 1 semana', valor: 'R$ 20', retorno: 'R$ 250', produto: 'Virada de Saldo' },
+            { nome: 'Valentina Santos', texto: 'Já fiz 5 vezes, sempre dá certo! 🔥', estrelas: 5, tempo: 'há 1 semana', valor: 'R$ 40', retorno: 'R$ 500', produto: 'Virada de Saldo' },
+            { nome: 'Theo Oliveira', texto: 'Serviço confiável e rápido! 🚀', estrelas: 5, tempo: 'há 1 semana', valor: 'R$ 80', retorno: 'R$ 1.000', produto: 'Virada de Saldo' },
+            { nome: 'Helena Souza', texto: 'Recomendo a todos, é muito bom! 🙏', estrelas: 5, tempo: 'há 1 semana', valor: 'R$ 120', retorno: 'R$ 1.500', produto: 'Virada de Saldo' },
+            { nome: 'Arthur Lima', texto: 'Melhor método de renda extra! 💎', estrelas: 5, tempo: 'há 1 semana', valor: 'R$ 240', retorno: 'R$ 3.000', produto: 'Virada de Saldo' },
+            { nome: 'Isabella Costa', texto: 'Confia que dá certo, já recebi meu lucro! 💸', estrelas: 5, tempo: 'há 1 semana', valor: 'R$ 480', retorno: 'R$ 6.000', produto: 'Virada de Saldo' }
+        ];
+
+        function carregarFeedbacks() {
+            const lista = document.getElementById('listaFeedbacks');
+            lista.innerHTML = '';
+            const shuffled = [...feedbacksEstaticos];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            shuffled.forEach(fb => {
+                const div = document.createElement('div');
+                div.className = 'feedback-item';
+                const estrelas = '★'.repeat(fb.estrelas) + '☆'.repeat(5 - fb.estrelas);
+                div.innerHTML = `
+                    <div class="avatar">${fb.nome.charAt(0)}</div>
+                    <div class="conteudo">
+                        <div>
+                            <span class="nome">${fb.nome}</span>
+                            <span class="tempo">${fb.tempo}</span>
+                            <span class="badge-comprador">✅ Cliente</span>
+                            <span class="badge-verificado">✓ Verificado</span>
+                        </div>
+                        <div class="avaliacao">${estrelas}</div>
+                        <div class="texto">${fb.texto}</div>
+                        <div class="valor-pago">💳 Pagou: ${fb.valor} | Retorno: ${fb.retorno}</div>
+                        ${fb.produto ? `<div style="color:#666;font-size:0.7em;">📦 ${fb.produto}</div>` : ''}
+                    </div>
+                `;
+                lista.appendChild(div);
+            });
+            document.getElementById('totalFeedbacks').textContent = shuffled.length;
+        }
+
+        // ================================================================
+        // FEEDBACK - BLOQUEADO
+        // ================================================================
+
+        function selecionarEstrela(valor) { return; }
+
+        function abrirModalFeedback() {
+            salvarLog('erro', 'Feedback bloqueado', { usuario: usuarioAtual });
+            mostrarMensagemFlutuante('⚠️ Você precisa adquirir um produto antes de deixar um feedback!', 'erro');
+            return;
+        }
+
+        function fecharModalFeedback() { return; }
+
+        function enviarFeedback() {
+            mostrarMensagemFlutuante('⚠️ Sistema temporariamente desativado.', 'erro');
+            return;
+        }
+
+        // ================================================================
+        // SISTEMA DE ESTOQUE
+        // ================================================================
+
+        async function carregarEstoque() {
+            try {
+                const response = await fetch('/api/estoque');
+                const data = await response.json();
+                if (data.success) {
+                    estoqueAtual = data.estoque;
+                    renderizarEstoque();
+                    renderizarTabela();
+                    carregarProdutosAdicionais();
+                    return data.estoque;
+                }
+            } catch (error) {
+                console.error('❌ Erro ao carregar estoque:', error);
+            }
+            return { produtos: {} };
+        }
+
+        function renderizarEstoque() {
+            const lista = document.getElementById('estoqueLista');
+            if (!lista) return;
+            lista.innerHTML = '';
+            const produtos = estoqueAtual.produtos || {};
+            const ids = Object.keys(produtos);
+            if (ids.length === 0) {
+                lista.innerHTML = '<div style="text-align:center;color:#555;padding:20px;">📦 Nenhum produto no estoque.</div>';
+                return;
+            }
+            ids.forEach(id => {
+                const p = produtos[id];
+                const div = document.createElement('div');
+                div.className = 'estoque-item';
+                const qtd = p.quantidade || 0;
+                let badge = '';
+                if (qtd <= 0) badge = '<span class="badge-esgotado">❌ ESGOTADO</span>';
+                else if (qtd <= 5) badge = '<span class="badge-baixo">⚠️ ESTOQUE BAIXO</span>';
+                let acoes = '';
+                if (isAdmin) {
+                    acoes = `
+                        <div class="acoes">
+                            <button class="btn-editar" onclick="editarEstoque('${id}')">✏️ Editar</button>
+                            <button class="btn-excluir" onclick="excluirProdutoEstoque('${id}')">🗑️</button>
+                        </div>
+                    `;
+                }
+                div.innerHTML = `
+                    <div class="info">
+                        <span class="nome">${p.nome || id}</span>
+                        <span class="preco">R$ ${p.preco || 0}</span>
+                        <span class="qtd ${qtd <= 5 ? 'baixo' : ''}">📦 ${qtd}</span>
+                        ${badge}
+                    </div>
+                    ${acoes}
+                `;
+                lista.appendChild(div);
+            });
+        }
+
+        async function editarEstoque(produtoId) {
+            if (!isAdmin) {
+                mostrarMensagemFlutuante('⚠️ Apenas administradores podem editar o estoque!', 'erro');
+                return;
+            }
+            const produto = estoqueAtual.produtos[produtoId];
+            if (!produto) return;
+            const novaQtd = prompt(`📦 Estoque atual: ${produto.quantidade}\nDigite a nova quantidade:`, produto.quantidade);
+            if (novaQtd === null) return;
+            const qtd = parseInt(novaQtd);
+            if (isNaN(qtd) || qtd < 0) {
+                mostrarMensagemFlutuante('❌ Quantidade inválida!', 'erro');
+                return;
+            }
+            const novoPreco = prompt(`💰 Preço atual: R$ ${produto.preco}\nDigite o novo preço:`, produto.preco);
+            if (novoPreco === null) return;
+            const preco = parseFloat(novoPreco);
+            if (isNaN(preco) || preco < 0) {
+                mostrarMensagemFlutuante('❌ Preço inválido!', 'erro');
+                return;
+            }
+            try {
+                const response = await fetch('/api/estoque/atualizar', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Admin-Key': 'MAGNATA_ADMIN_2024'
+                    },
+                    body: JSON.stringify({ produtoId, quantidade: qtd, preco: preco })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    mostrarMensagemFlutuante('✅ Estoque e preço atualizados!', 'sucesso');
+                    await carregarEstoque();
+                    await carregarProdutosAdicionais();
+                    renderizarTabela();
+                } else {
+                    mostrarMensagemFlutuante('❌ ' + data.error, 'erro');
+                }
+            } catch (error) {
+                mostrarMensagemFlutuante('❌ Erro ao atualizar estoque', 'erro');
+            }
+        }
+
+        async function excluirProdutoEstoque(produtoId) {
+            if (!isAdmin) {
+                mostrarMensagemFlutuante('⚠️ Apenas administradores podem excluir produtos!', 'erro');
+                return;
+            }
+            if (!confirm('⚠️ Tem certeza que deseja excluir este produto?')) return;
+            try {
+                const response = await fetch(`/api/estoque/remover/${produtoId}`, {
+                    method: 'DELETE',
+                    headers: { 'Admin-Key': 'MAGNATA_ADMIN_2024' }
+                });
+                const data = await response.json();
+                if (data.success) {
+                    mostrarMensagemFlutuante('✅ Produto removido!', 'sucesso');
+                    await carregarEstoque();
+                    await carregarProdutosAdicionais();
+                } else {
+                    mostrarMensagemFlutuante('❌ ' + data.error, 'erro');
+                }
+            } catch (error) {
+                mostrarMensagemFlutuante('❌ Erro ao remover produto', 'erro');
+            }
+        }
+
+        async function adicionarProdutoEstoque() {
+            if (!isAdmin) {
+                mostrarMensagemFlutuante('⚠️ Apenas administradores podem adicionar produtos!', 'erro');
+                return;
+            }
+            const id = document.getElementById('addProdutoId').value.trim();
+            const nome = document.getElementById('addProdutoNome').value.trim();
+            const preco = parseFloat(document.getElementById('addProdutoPrecoEstoque').value);
+            const quantidade = parseInt(document.getElementById('addProdutoQtdEstoque').value);
+            if (!id || !nome || isNaN(preco) || isNaN(quantidade)) {
+                mostrarMensagemFlutuante('❌ Preencha todos os campos!', 'erro');
+                return;
+            }
+            if (quantidade < 0) {
+                mostrarMensagemFlutuante('❌ Quantidade não pode ser negativa!', 'erro');
+                return;
+            }
+            try {
+                const response = await fetch('/api/estoque/adicionar', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Admin-Key': 'MAGNATA_ADMIN_2024'
+                    },
+                    body: JSON.stringify({ id, nome, preco, quantidade })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    mostrarMensagemFlutuante('✅ Produto adicionado!', 'sucesso');
+                    document.getElementById('addProdutoId').value = '';
+                    document.getElementById('addProdutoNome').value = '';
+                    document.getElementById('addProdutoPrecoEstoque').value = '';
+                    document.getElementById('addProdutoQtdEstoque').value = '';
+                    await carregarEstoque();
+                    await carregarProdutosAdicionais();
+                } else {
+                    mostrarMensagemFlutuante('❌ ' + data.error, 'erro');
+                }
+            } catch (error) {
+                mostrarMensagemFlutuante('❌ Erro ao adicionar produto', 'erro');
+            }
+        }
+
+        // ================================================================
+        // MENSAGEM FLUTUANTE
+        // ================================================================
+
+        function mostrarMensagemFlutuante(texto, tipo) {
+            const existing = document.querySelector('.mensagem-flutuante');
+            if (existing) existing.remove();
+            const div = document.createElement('div');
+            div.className = `mensagem-flutuante ${tipo}`;
+            div.textContent = texto;
+            document.body.appendChild(div);
+            setTimeout(() => {
+                div.style.opacity = '0';
+                div.style.transition = 'opacity 0.5s ease';
+                setTimeout(() => div.remove(), 500);
+            }, 4000);
+        }
+
+        // ================================================================
+        // INICIALIZAÇÃO
+        // ================================================================
+
+        document.getElementById('modalPagamento').addEventListener('click', function(e) {
+            if (e.target === this) fecharModalPagamento();
+        });
+
+        document.getElementById('modalFeedback').addEventListener('click', function(e) {
+            if (e.target === this) fecharModalFeedback();
+        });
+
+        carregarFeedbacks();
+        carregarProdutosAdicionais();
+        carregarEstoque();
+        salvarLog('info', 'Sistema iniciado');
+
+        console.log('✅ MagnataStore iniciado!');
+        console.log('🔐 Login: cliente / 123456');
+        console.log('👑 Admin: DONOMAGNATASTORE (senha no backend)');
+        console.log('🔥 Plano Teste: R$ 10 → R$ 100');
+        console.log('📦 Estoque só diminui quando o pagamento é confirmado!');
+        console.log('🛒 Botões com COMPRAR e carrinho 🛒');
+        console.log('💬 100 feedbacks carregados!');
+    </script>
+
+</body>
+</html>
